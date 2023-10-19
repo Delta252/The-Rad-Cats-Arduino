@@ -10,6 +10,7 @@ enum operation {
   MIXER,
   DETAIL,
   READ,
+  EXTRACT
 };
 
 enum SENSOR {
@@ -72,10 +73,14 @@ class ASerial {
     int shutter;
     int shutterPos;
 
+    int extract;
+    int extractPos;
+
     void Pump();
     void Mixer();
     void Valve();
     void Shutter();
+    void Extract();
 
     void readSensors();
 
@@ -149,5 +154,7 @@ class ASerial {
 
     int getShutter();
     int getShutterPos();
+
+    int getExtractPos();
 };
 #endif
