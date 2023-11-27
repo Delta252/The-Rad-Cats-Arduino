@@ -187,6 +187,9 @@ void ASerial::analyse() {
       op = DETAIL;
       ReturnDetails();
       break;
+    case 'E':
+      op = EXTRACT;
+      Extract();
     default:
       break;
   }
@@ -263,6 +266,15 @@ void ASerial::Shutter() {
   Command.remove(0, rubbish.length());
   shutterPos = readStringuntil(Command, ' ').toInt();
   //Serial.println(shutterPos);
+}
+
+void ASerial::Extract()
+{
+  String rubbish;
+  extract = Command[1] - '0';
+  rubbish = readStringuntil(Command, 'S');
+  Command.remove(0, rubbish.length());
+  extractPos = readStringuntil(Command,' ').toInt();
 }
 
 void ASerial::readSensors() {
@@ -364,6 +376,10 @@ int ASerial::getShutter() {
 }
 int ASerial::getShutterPos() {
   return shutterPos;
+}
+int ASerial::getExtractPos()
+{
+  return extractPos;
 }
 int ASerial::GetCommand() {
   int S = process();

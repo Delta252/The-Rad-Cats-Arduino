@@ -3,12 +3,12 @@
 #include "MixerMotor.h"
 
 String DeviceDesc = "Module = shutter";
-int Device_ID = 1005;
+int Device_ID = 1006;
 int Sender_ID = 1000;
 int Num_of_Pumps = 0;
 int Num_of_Valves = 0;
 int Num_of_Shutter = 1;
-int Num_of_Mixer = 0;
+int Num_of_Mixer = 1;
 int Num_of_Temp = 1;
 int Num_of_Bubble = 0;
 int Num_of_LDS = 0;
@@ -17,7 +17,7 @@ int ResetPin = 3;
 ASerial Device(DeviceDesc, Device_ID, Sender_ID, Num_of_Pumps, Num_of_Valves, Num_of_Shutter, Num_of_Temp, Num_of_Bubble, Num_of_LDS, Num_of_Mixer, ResetPin);
 
 Shutter shutter(54, 3);
-MixerMotor MagMix(10,11,9);
+MixerMotor MagMix(9,10,6);
 
 void setup() {
   // put your setup code here, to run once:

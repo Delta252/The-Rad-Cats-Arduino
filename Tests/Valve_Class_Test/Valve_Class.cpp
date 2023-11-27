@@ -24,7 +24,7 @@ class Valve{
 // Setup
   void setUp(){
     myservo.attach(Valve::pinSer);
-    myservo.write(0);
+    myservo.write(125);
   }
 
 

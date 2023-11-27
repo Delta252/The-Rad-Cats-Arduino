@@ -1,5 +1,5 @@
 int StepsPerRev = 3200;
-int dir = 5;
+int dir = 11;
 int Step = 2;
 int EN = 8;
 float step2ml = 1648.8;
@@ -20,6 +20,7 @@ void setup() {
   //
   //  }
   digitalWrite(dir, HIGH);
+  loop();
 }
 
 void loop() {
