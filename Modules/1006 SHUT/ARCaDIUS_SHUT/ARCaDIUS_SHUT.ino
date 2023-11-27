@@ -17,7 +17,7 @@ int ResetPin = 3;
 ASerial Device(DeviceDesc, Device_ID, Sender_ID, Num_of_Pumps, Num_of_Valves, Num_of_Shutter, Num_of_Temp, Num_of_Bubble, Num_of_LDS, Num_of_Mixer, ResetPin);
 
 Shutter shutter(54, 3);
-MixerMotor MagMix(10,11,9);
+MixerMotor MagMix(9,10,6);
 
 void setup() {
   // put your setup code here, to run once:
