@@ -1,19 +1,18 @@
 #include <Arduino.h>
+#include "AccelStepper.h"
 
-enum method
-{
-    SINGLE,
-    DOUBLE;
-}
-
-
+#define MOTORLATCH 12
+#define MOTORCLK 4
+#define MOTORENABLE 7
+#define MOTORDATA 8
 
 class StepperMotor
 {
+    private:
+    AccelStepper myMotor;
     public:
     //Constructor
-    StepperMotor(uint16_t revSteps, uint8_t portNumber);
-    void run(uint16_t numOfSteps, bool dir, uint8_t method);
-    void setSpeed(uint16_t speed);
-    uint32_t timePerStep, timer;
-}
+    StepperMotor() = default;
+    void setUp();
+    void pumpVolume(uint16_t volume);
+};
