@@ -189,7 +189,7 @@ void ASerial::analyse() {
       op = DETAIL;
       ReturnDetails();
       break;
-    case 'S':
+    case 'Y':
       op = SYRINGE;
       Syringe();
     default:

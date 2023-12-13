@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include "AccelStepper.h"
+#include <AFMotor.h>
 
 #define MOTORLATCH 12
 #define MOTORCLK 4
@@ -9,10 +10,11 @@
 class StepperMotor
 {
     private:
-    AccelStepper myMotor;
+    
     public:
     //Constructor
     StepperMotor() = default;
     void setUp();
     void pumpVolume(uint16_t volume);
+    void move();
 };

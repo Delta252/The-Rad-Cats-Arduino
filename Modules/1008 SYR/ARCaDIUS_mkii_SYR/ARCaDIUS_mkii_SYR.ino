@@ -11,13 +11,14 @@ int Num_of_Mixer = 0;
 int Num_of_LDS = 0;
 int Num_of_Temp = 0;
 int Num_of_Bubble = 0;
-int Num_of_Syringe = 0;
+int Num_of_Syringe = 1;
 int ResetPin = 3;
 
 ASerial Device(DeviceDesc, Device_ID, Sender_ID, Num_of_Pumps, Num_of_Valves, Num_of_Shutter, Num_of_Temp, Num_of_Bubble, Num_of_LDS, Num_of_Mixer, Num_of_Syringe, ResetPin);
 StepperMotor myMotor;
 
 void setup() {
+  Serial.begin(115200);
   // put your setup code here, to run once:
   myMotor.setUp();
 }
@@ -43,6 +44,7 @@ void loop() {
       case SYRINGE:
         Serial.println("The Syringe number is: " + (String)Device.getSyringe());
         Serial.println("The Syringe volume is: " + (String)Device.getSyringeVolume());
+        myMotor.pumpVolume(Device.getSyringeVolume());
         break;
       default: // Leave this, its just the default //[sID1000 rID1006 PK2 E1 S0]
         break;
