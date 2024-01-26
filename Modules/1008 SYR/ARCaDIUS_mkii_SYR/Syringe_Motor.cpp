@@ -16,20 +16,22 @@ AccelStepper accelMotor(forwardstep, backwardstep);
 
 void StepperMotor::setUp(void)
 {
-  accelMotor.setMaxSpeed(500);
-  accelMotor.setAcceleration(80);
+  accelMotor.setMaxSpeed(200);
+  accelMotor.setSpeed(200);
+  accelMotor.setAcceleration(50);
 }
 
 void StepperMotor::pumpVolume(uint16_t volume)
 {
   //Will probably need to do some maths once calibrated to calculate volume through distance
   long distanceToMove = volume;
-  accelMotor.move(distanceToMove);
+  accelMotor.moveTo(distanceToMove);
   while(accelMotor.distanceToGo() != 0)
   {
     accelMotor.run();
   }
 }
+
 
 void StepperMotor::move()
 {
