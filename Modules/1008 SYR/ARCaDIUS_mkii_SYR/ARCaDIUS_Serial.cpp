@@ -1,5 +1,6 @@
 #include "ARCaDIUS_Serial.h"
 
+String currentCommand;
 
 ASerial::ASerial(String DD, int rID, int sID, int P, int V, int I, int T, int B, int L, int M, int S, int Res) {
   ResPin = Res;
@@ -10,6 +11,7 @@ ASerial::ASerial(String DD, int rID, int sID, int P, int V, int I, int T, int B,
   Sender_ID = sID;
   sACK = "[sID" + (String)rID + " rID" + (String)sID + " PK1 ACK]";
   sBUSY = "[sID" + (String)rID + " rID" + (String)sID + " PK1 BUSY]";
+  sCONF = "[sID" + (String)rID + " rID" + (String)sID + " PK1 CONF]";
   NumPump = P;
   NumValve = V;
   NumIrr = I;
@@ -74,7 +76,6 @@ void ASerial::ReturnDetails() {
 }
 
 
-
 int ASerial::CheckrID(String rID, int Device_ID) {
   int ID = 0;
   for (int i = 3; i < rID.length(); i++) {
@@ -118,6 +119,11 @@ void ASerial::Error(int code) {
 
 bool ASerial::GotCommand(){
   if(Serial.available()>0){
+    if(Serial.peek() == 'C')
+    {
+      Serial.println(instance0_->sCONF);
+      return true;
+    }
     Serial.println(instance0_->sACK);
     if (Serial.peek() == 'K') {
       Serial.println("KILL");
@@ -130,15 +136,35 @@ bool ASerial::GotCommand(){
   }
 }
 
+int ASerial::Handshake()
+{
+  Serial.println("[sID" + (String)Device_ID + " rID" + (String)Sender_ID + " PK1 CONF]");
+  Serial.flush();
+  serialFlush();
+}
+
 int ASerial::process() {
-  if (Serial.available() > 0) {
+  Serial.println("Here3");
+  if (Serial.available() > 0 && Serial.peek() != 'C') {
+    Serial.println("Here2");
+    // if(baseCommand == "[sID1000 PK1 H0]"){
+    //   Handshake();
+    //   Serial.println("Here");
+    //   return 1;
+    // }
     sID = Serial.readStringUntil(' ');
+    Serial.println(sID);
+    //Serial.println(sID);
     if (sID[0] == '[') {
       //Serial.println(sID);
       SerialsID = ChecksID(sID, Sender_ID);
       if (SerialsID != -1) {
         rID = Serial.readStringUntil(' ');
         //Serial.println(rID);
+        if(rID == "PK1"){
+          Handshake();
+          return 1;
+        }
         SerialrID = CheckrID(rID, Device_ID);
         if (SerialrID != -1) {
           rPK_Size = Serial.readStringUntil(' ');
@@ -277,6 +303,9 @@ void ASerial::Syringe()
   rubbish = readStringuntil(Command, 'S');
   Command.remove(0, rubbish.length());
   syringeVolume = readStringuntil(Command, ' ').toFloat();
+  rubbish = readStringuntil(Command, 'D');
+  Command.remove(0, rubbish.length());
+  syringeDir = readStringuntil(Command, ' ').toFloat();
 }
 
 void ASerial::readSensors() {
@@ -386,6 +415,10 @@ float ASerial::getSyringeVolume()
 int ASerial::getSyringe()
 {
   return syringe;
+}
+int ASerial::getSyringeDir()
+{
+  return syringeDir;
 }
 int ASerial::GetCommand() {
   int S = process();

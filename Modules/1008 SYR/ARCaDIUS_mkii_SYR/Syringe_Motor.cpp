@@ -18,14 +18,16 @@ void StepperMotor::setUp(void)
 {
   accelMotor.setMaxSpeed(200);
   accelMotor.setSpeed(200);
-  accelMotor.setAcceleration(50);
+  accelMotor.setAcceleration(100);
 }
 
-void StepperMotor::pumpVolume(uint16_t volume)
+//bool dir = true means forward, dir = false means backwards.
+void StepperMotor::pumpVolume(uint16_t volume, uint16_t direction)
 {
   //Will probably need to do some maths once calibrated to calculate volume through distance
   long distanceToMove = volume;
   accelMotor.moveTo(distanceToMove);
+
   while(accelMotor.distanceToGo() != 0)
   {
     accelMotor.run();

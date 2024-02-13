@@ -25,6 +25,8 @@ class ASerial {
     //Flushes the serial port of any unwanted data
     void serialFlush();
 
+    int Handshake();
+
     //Checks to see if the receiver ID matches that of the device
     int CheckrID(String rID, int Device_ID);
 
@@ -40,6 +42,7 @@ class ASerial {
     int Sender_ID;
     String sACK;
     String sBUSY;
+    String sCONF;
     String DeviceDesc;
 
     int NumPump;
@@ -76,6 +79,7 @@ class ASerial {
 
     int syringe;
     float syringeVolume;
+    int syringeDir;
 
     void Pump();
     void Mixer();
@@ -158,5 +162,6 @@ class ASerial {
 
     float getSyringeVolume();
     int getSyringe();
+    int getSyringeDir();
 };
 #endif
