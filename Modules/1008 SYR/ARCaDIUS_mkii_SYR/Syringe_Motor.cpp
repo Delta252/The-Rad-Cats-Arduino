@@ -22,10 +22,15 @@ void StepperMotor::setUp(void)
 }
 
 //bool dir = true means forward, dir = false means backwards.
-void StepperMotor::pumpVolume(uint16_t volume, uint16_t direction)
+void StepperMotor::pumpVolume(float volume, uint16_t direction)
 {
   //Will probably need to do some maths once calibrated to calculate volume through distance
-  long distanceToMove = volume;
+  float distanceToMove = 0;
+  if(volume != 0)
+  {
+    distanceToMove = (volume + 0.8) / 0.001;
+  }
+  Serial.println(distanceToMove);
   accelMotor.moveTo(distanceToMove);
 
   while(accelMotor.distanceToGo() != 0)

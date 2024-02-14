@@ -15,6 +15,6 @@ class StepperMotor
     //Constructor
     StepperMotor() = default;
     void setUp();
-    void pumpVolume(uint16_t volume, uint16_t direction);
+    void pumpVolume(float volume, uint16_t direction);
     void move();
 };
