@@ -1,3 +1,5 @@
+#ifndef Valve_H
+#define Valve_H
 #include <Servo.h>
 
 class Valve{
@@ -7,8 +9,8 @@ class Valve{
     int posMid = 2;
     int a = 0;
     int angleMid = 90;
-    int angleOpen = 65;
-    int angleClose = 125;  
+    int angleOpen;
+    int angleClose;  
     int pinSer;  // pin number (should be 2 for the servo)
     Servo myservo;
 
@@ -16,8 +18,8 @@ class Valve{
     
   public:
 // Constructor and initial settings
-    //Valve(int pinServo, int posOpen, int posClose):pinSer(pinServo), posOpen(posOpen), posClose(posClose){}
-    Valve(int pinServo, int AngO, int AngC):pinSer(pinServo), angleOpen(AngO), angleClose(AngC){}
+    Valve(int pinServo, int posOpen, int posClose):pinSer(pinServo), angleOpen(posOpen), angleClose(posClose){}
+
 
 
 // Setup
@@ -57,3 +59,5 @@ class Valve{
 // Get measurement of the limit set for the servo motor (in degrees)
     int get_lim(int pos);
 };
+
+#endif

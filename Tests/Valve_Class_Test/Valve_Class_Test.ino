@@ -1,14 +1,14 @@
 #include "Valve_Class.h"
 
-Valve myvalve2(2, 55, 135);
+Valve myvalve2(3, 20, 50);
 
-// Servo myservo2;
+Servo myservo2;
 void setup(){
   myvalve2.setUp();
 
 }
 
-int a=0,b=70;
+int a=10,b=70;
 void loop2(){
   myvalve2.set_pos1();
   delay(500);

@@ -7,10 +7,6 @@
 void Valve::setUp(void) {
   Valve::myservo.attach(pinSer);
   Valve::myservo.write(90); 
-  delay(500);
-  Valve::myservo.write(130);
-  delay(500);
-  Valve::myservo.write(60);  
 }
 
 void Valve::set_pos(int pos) {
