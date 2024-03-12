@@ -10,6 +10,7 @@ ASerial::ASerial(String DD, int rID, int sID, int P, int V, int I, int T, int B,
   Sender_ID = sID;
   sACK = "[sID" + (String)rID + " rID" + (String)sID + " PK1 ACK]";
   sBUSY = "[sID" + (String)rID + " rID" + (String)sID + " PK1 BUSY]";
+  sCONF = "[sID" + (String)rID + " rID" + (String)sID + " PK1 CONF]";
   NumPump = P;
   NumValve = V;
   NumIrr = I;
@@ -130,6 +131,11 @@ bool ASerial::GotCommand(){
 
 int ASerial::process() {
   if (Serial.available() > 0) {
+    if(Serial.peek() == 'C')
+    {
+      Serial.println(instance0_->sCONF);
+      return true;
+    }
     sID = Serial.readStringUntil(' ');
     if (sID[0] == '[') {
       //Serial.println(sID);
@@ -186,6 +192,9 @@ void ASerial::analyse() {
       op = DETAIL;
       ReturnDetails();
       break;
+    case 'E':
+      op = EXTRACT;
+      Extract();
     default:
       break;
   }
@@ -262,6 +271,15 @@ void ASerial::Shutter() {
   Command.remove(0, rubbish.length());
   shutterPos = readStringuntil(Command, ' ').toInt();
   //Serial.println(shutterPos);
+}
+
+void ASerial::Extract()
+{
+  String rubbish;
+  extract = Command[1] - '0';
+  rubbish = readStringuntil(Command, 'S');
+  Command.remove(0, rubbish.length());
+  extractPos = readStringuntil(Command,' ').toInt();
 }
 
 void ASerial::readSensors() {
@@ -363,6 +381,10 @@ int ASerial::getShutter() {
 }
 int ASerial::getShutterPos() {
   return shutterPos;
+}
+int ASerial::getExtractPos()
+{
+  return extractPos;
 }
 int ASerial::GetCommand() {
   int S = process();

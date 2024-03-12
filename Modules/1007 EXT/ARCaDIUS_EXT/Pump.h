@@ -9,7 +9,7 @@ class Pump {
     Servo serPump;
     int pinNum;     // pin number (should be 2 for the servo)
     //enum pump_type {servo=0, stepper=1};
-    bool pump_type; // 0 = servo; 1 = stepper
+    bool pump_type = 0; // 0 = servo; 1 = stepper
     float flowrate = 0;
     float volume = 0;
     bool dir = 0;

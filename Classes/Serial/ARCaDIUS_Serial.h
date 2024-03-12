@@ -9,6 +9,8 @@ enum operation {
   VALVE,
   MIXER,
   DETAIL,
+  READ,
+  EXTRACT,
 };
 
 enum SENSOR {
@@ -38,6 +40,7 @@ class ASerial {
     int Sender_ID;
     String sACK;
     String sBUSY;
+    String sCONF;
     String DeviceDesc;
 
     int NumPump;
@@ -71,10 +74,14 @@ class ASerial {
     int shutter;
     int shutterPos;
 
+    int extract;
+    int extractPos;
+
     void Pump();
     void Mixer();
     void Valve();
     void Shutter();
+    void Extract();
 
     void readSensors();
 
@@ -148,5 +155,7 @@ class ASerial {
 
     int getShutter();
     int getShutterPos();
+
+    int getExtractPos();
 };
 #endif

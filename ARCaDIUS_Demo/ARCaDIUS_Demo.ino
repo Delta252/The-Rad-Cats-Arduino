@@ -48,6 +48,7 @@ void loop() {
   if (Device.GotCommand()) {
     //[sID1000 rID1001 PK1 R]
     Device.updateSensors(BUBBLE, 1, bubble.Status());
+    Serial.println(bubble.Status());
     Device.updateSensors(LDS, 1, liquid.StatusLDS());
     switch (Device.GetCommand()) {
       case PUMP: // Enter code for pumping here

@@ -16,8 +16,8 @@ AccelStepper accelMotor(forwardstep, backwardstep);
 
 void StepperMotor::setUp(void)
 {
-  accelMotor.setMaxSpeed(200);
-  accelMotor.setSpeed(200);
+  accelMotor.setMaxSpeed(100);
+  accelMotor.setSpeed(100);
   accelMotor.setAcceleration(100);
 }
 
@@ -25,11 +25,11 @@ void StepperMotor::setUp(void)
 void StepperMotor::pumpVolume(float volume, uint16_t direction)
 {
   //Will probably need to do some maths once calibrated to calculate volume through distance
-  float distanceToMove = 0;
-  if(volume != 0)
-  {
-    distanceToMove = (volume + 0.8) / 0.001;
-  }
+  float distanceToMove = volume;
+  // if(volume != 0)
+  // {
+  //   distanceToMove = (volume / 0.01964) * 20;
+  // }
   Serial.println(distanceToMove);
   accelMotor.moveTo(distanceToMove);
 
