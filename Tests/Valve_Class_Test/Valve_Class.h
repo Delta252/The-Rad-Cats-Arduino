@@ -16,8 +16,8 @@ class Valve{
     
   public:
 // Constructor and initial settings
-    Valve(int pinServo, int posOpen, int posClose):pinSer(pinServo), posOpen(posOpen), posClose(posClose){}
-
+    //Valve(int pinServo, int posOpen, int posClose):pinSer(pinServo), posOpen(posOpen), posClose(posClose){}
+    Valve(int pinServo, int AngO, int AngC):pinSer(pinServo), angleOpen(AngO), angleClose(AngC){}
 
 
 // Setup

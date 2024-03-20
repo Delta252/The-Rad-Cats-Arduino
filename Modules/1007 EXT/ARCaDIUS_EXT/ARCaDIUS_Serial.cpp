@@ -383,6 +383,10 @@ int ASerial::getShutter() {
 int ASerial::getShutterPos() {
   return shutterPos;
 }
+int ASerial::getExtractPos()
+{
+  return extractPos;
+}
 int ASerial::GetCommand() {
   int S = process();
   serialFlush();

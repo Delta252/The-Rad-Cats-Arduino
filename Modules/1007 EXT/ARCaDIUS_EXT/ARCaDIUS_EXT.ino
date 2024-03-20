@@ -12,9 +12,12 @@ int Num_of_Shutter = 0;
 int Num_of_Mixer = 0;
 int Num_of_Temp = 0;
 int Num_of_Bubble = 0;
+int Num_of_LDS = 1;
 int ResetPin = 3;
 
-ASerial Device(DeviceDesc, Device_ID, Sender_ID, Num_of_Pumps, Num_of_Valves, Num_of_Shutter, Num_of_Temp, Num_of_Bubble, 0, Num_of_Mixer, ResetPin);
+
+ASerial Device(DeviceDesc, Device_ID, Sender_ID, Num_of_Pumps, Num_of_Valves, Num_of_Shutter, Num_of_Temp, Num_of_Bubble, Num_of_LDS, Num_of_Mixer, ResetPin);
+
 Pump P5(5);
 Extract E1(6);
 

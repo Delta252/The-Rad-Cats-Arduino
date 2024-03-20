@@ -20,7 +20,6 @@ void Valve::set_pos(int pos) {
   else if (pos == 2) { // If pos is middle
     myservo.write(angleMid);
   }
-  
 }
 
 
@@ -42,7 +41,6 @@ int Valve::get_pos_analog(void) {
 // Get state of valve (0 (open), 1 (closed), 2 (middle))
 int Valve::get_pos_digital(void) {
   return a;
-  
 } // End function
 
 
@@ -59,4 +57,3 @@ int Valve::get_lim(int pos) {
     return angleMid;
   }
 } // End function
-

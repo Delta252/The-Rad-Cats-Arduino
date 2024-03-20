@@ -5,6 +5,7 @@ void MixerMotor:: SetUpMotor() {
   pinMode(E,OUTPUT);
   pinMode(MP1,OUTPUT);
   pinMode(MP2,OUTPUT);
+  analogWrite(E,0);
 }  
 
 void MixerMotor:: StopMotor(){
@@ -18,4 +19,6 @@ void MixerMotor:: SetSpeed(int PWM) {
   delay(500);
   digitalWrite(MP1,HIGH); //one way
   digitalWrite(MP2,LOW);
+  // delay(500);
+  // analogWrite(E,PWM);
 }
