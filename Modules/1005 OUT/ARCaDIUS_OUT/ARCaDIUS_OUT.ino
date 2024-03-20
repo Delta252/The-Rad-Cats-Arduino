@@ -25,6 +25,7 @@ Valve Valve2(5, 65, 127);
 Valve Valve3(6, 65, 128);
 Valve Valve4(9, 65, 127);
 Valve Valve5(10, 66, 130);
+ValveHandler valveController(Valve1, Valve2, Valve3, Valve4, Valve5);
 Pump P1(11);
 
 void setup() {
@@ -62,7 +63,7 @@ void loop() {
       case VALVE:
         switch (Device.getValve()) {//test [sID1000 rID1004 PK2 V1 S0]
           case 1:
-            Valve1.set_pos(Device.getValveState());
+            valveController.openValve1();
             Serial.println("valve number: " + (String)Device.getValve());
             Serial.println("valve state:  " + (String)Valve1.get_pos_digital());
             Serial.println("valve angle:  " + (String)Valve1.get_pos_analog());

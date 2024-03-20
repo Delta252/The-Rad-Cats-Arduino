@@ -28,6 +28,8 @@ void Valve::set_pos(int pos) {
     default:
       break;
   }
+  Serial.println(pinSer);
+  Serial.println(get_pos_analog());
 }
 
 
@@ -66,3 +68,13 @@ int Valve::get_lim(int pos) {
     return angleMid;
   }
 } // End function
+
+void ValveHandler::openValve1()
+{
+  //Open Valve 1, close other valves
+  V1.set_pos(0);
+  V2.set_pos(1);
+  V3.set_pos(1);
+  V4.set_pos(1);
+  V5.set_pos(1);
+}

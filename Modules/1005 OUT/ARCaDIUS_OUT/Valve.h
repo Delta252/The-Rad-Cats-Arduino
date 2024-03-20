@@ -60,4 +60,21 @@ class Valve{
     int get_lim(int pos);
 };
 
+class ValveHandler{
+  private:
+  Valve V1;
+  Valve V2;
+  Valve V3;
+  Valve V4;
+  Valve V5;
+  public:
+// Constructor and initial settings
+    ValveHandler(Valve Valve1, Valve Valve2, Valve Valve3, Valve Valve4, Valve Valve5):V1(Valve1), V2(Valve2), V3(Valve3), V4(Valve4), V5(Valve5){}
+
+  void openValve1();
+  void openValve2();
+  void openValve3();
+  void openValve4();
+  void openValve5();
+};
 #endif
