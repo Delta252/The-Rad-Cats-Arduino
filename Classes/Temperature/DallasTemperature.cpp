@@ -47,7 +47,6 @@ void DallasTemperature::begin(void) {
             ScratchPad scratchPad;
 
             readScratchPad(deviceAddress, scratchPad);
-            Serial.println("hello");
             bitResolution = max(bitResolution, getResolution(deviceAddress));
 
             devices++;
