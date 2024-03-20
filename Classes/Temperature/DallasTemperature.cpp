@@ -33,11 +33,12 @@ DallasTemperature::DallasTemperature(OneWire* _oneWire)
 // initialise the bus
 void DallasTemperature::begin(void) {
     DeviceAddress deviceAddress;
-
+    
     _wire->reset_search();
     devices = 0; // Reset the number of devices when we enumerate wire devices
-
+    Serial.println("hellllo");
     while (_wire->search(deviceAddress)) {
+      Serial.println("oghnj");
         if (validAddress(deviceAddress)) {
             if (!parasite && readPowerSupply(deviceAddress)) {
                 parasite = true;
@@ -46,7 +47,6 @@ void DallasTemperature::begin(void) {
             ScratchPad scratchPad;
 
             readScratchPad(deviceAddress, scratchPad);
-
             bitResolution = max(bitResolution, getResolution(deviceAddress));
 
             devices++;

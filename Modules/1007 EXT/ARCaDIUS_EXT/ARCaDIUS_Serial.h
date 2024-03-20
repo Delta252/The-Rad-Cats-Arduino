@@ -10,7 +10,7 @@ enum operation {
   MIXER,
   DETAIL,
   READ,
-  EXTRACT
+  EXTRACT,
 };
 
 enum SENSOR {
@@ -40,6 +40,7 @@ class ASerial {
     int Sender_ID;
     String sACK;
     String sBUSY;
+    String sCONF;
     String DeviceDesc;
 
     int NumPump;

@@ -1,5 +1,6 @@
 #include "ARCaDIUS_Serial.h"
 #include "Pump.h"
+#include "LDSensor.h"
 
 String DeviceDesc = "Module = Input 1";
 int Device_ID = 1001;
@@ -16,7 +17,7 @@ int ResetPin = 3;
 ASerial Device(DeviceDesc, Device_ID, Sender_ID, Num_of_Pumps, Num_of_Valves, Num_of_Shutter, Num_of_Temp, Num_of_Bubble, Num_of_LDS, Num_of_Mixer, ResetPin);
 Pump P1(7,8,4);
 
-//LDSensor LDS1(3);
+LDSensor LDS1(3);
 int Liquid = 3;
 void setup() {
   // put your setup code here, to run once:
@@ -24,6 +25,7 @@ void setup() {
   Device.Start();
   P1.setUp();
   pinMode(Liquid, INPUT);
+  LDS1.setUp();
 }
 
 

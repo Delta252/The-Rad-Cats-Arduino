@@ -10,6 +10,7 @@ ASerial::ASerial(String DD, int rID, int sID, int P, int V, int I, int T, int B,
   Sender_ID = sID;
   sACK = "[sID" + (String)rID + " rID" + (String)sID + " PK1 ACK]";
   sBUSY = "[sID" + (String)rID + " rID" + (String)sID + " PK1 BUSY]";
+  sCONF = "[sID" + (String)rID + " rID" + (String)sID + " PK1 CONF]";
   NumPump = P;
   NumValve = V;
   NumIrr = I;
@@ -116,6 +117,11 @@ void ASerial::Error(int code) {
 
 bool ASerial::GotCommand(){
   if(Serial.available()>0){
+    if(Serial.peek() == 'C')
+    {
+      Serial.println(instance0_->sCONF);
+      return true;
+    }
     Serial.println(instance0_->sACK);
     if (Serial.peek() == 'K') {
       Serial.println("KILL");
@@ -389,6 +395,11 @@ int ASerial::GetCommand() {
     return op;
   }
   return -1;
+}
+
+int ASerial::getExtractPos()
+{
+  return extractPos;
 }
 
 void ASerial::FinishedCommand() {

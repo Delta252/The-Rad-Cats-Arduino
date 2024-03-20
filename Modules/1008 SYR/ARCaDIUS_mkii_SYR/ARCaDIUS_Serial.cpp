@@ -1,7 +1,8 @@
 #include "ARCaDIUS_Serial.h"
 
+String currentCommand;
 
-ASerial::ASerial(String DD, int rID, int sID, int P, int V, int I, int T, int B, int L, int M, int Res) {
+ASerial::ASerial(String DD, int rID, int sID, int P, int V, int I, int T, int B, int L, int M, int S, int Res) {
   ResPin = Res;
   digitalWrite(ResPin, HIGH);
   pinMode(ResPin, OUTPUT);
@@ -18,6 +19,7 @@ ASerial::ASerial(String DD, int rID, int sID, int P, int V, int I, int T, int B,
   NumBubble = B;
   NumLDS = L;
   NumMixer = M;
+  NumSyringe = S;
   isWaiting = true;
   instance0_ = this;
   TempVal = new float[NumTemp];
@@ -68,10 +70,10 @@ void ASerial::ReturnDetails() {
                  " T" + (String)NumTemp +
                  " B" + (String)NumBubble +
                  " L" + (String)NumLDS +
+                 " S " + (String)NumSyringe +
                  " (" + DeviceDesc + ")]");
 
 }
-
 
 
 int ASerial::CheckrID(String rID, int Device_ID) {
@@ -117,6 +119,11 @@ void ASerial::Error(int code) {
 
 bool ASerial::GotCommand(){
   if(Serial.available()>0){
+    if(Serial.peek() == 'C')
+    {
+      Serial.println(instance0_->sCONF);
+      return true;
+    }
     Serial.println(instance0_->sACK);
     if (Serial.peek() == 'K') {
       Serial.println("KILL");
@@ -129,20 +136,35 @@ bool ASerial::GotCommand(){
   }
 }
 
+int ASerial::Handshake()
+{
+  Serial.println("[sID" + (String)Device_ID + " rID" + (String)Sender_ID + " PK1 CONF]");
+  Serial.flush();
+  serialFlush();
+}
+
 int ASerial::process() {
-  if (Serial.available() > 0) {
-    if(Serial.peek() == 'C')
-    {
-      Serial.println(instance0_->sCONF);
-      return true;
-    }
+  Serial.println("Here3");
+  if (Serial.available() > 0 && Serial.peek() != 'C') {
+    Serial.println("Here2");
+    // if(baseCommand == "[sID1000 PK1 H0]"){
+    //   Handshake();
+    //   Serial.println("Here");
+    //   return 1;
+    // }
     sID = Serial.readStringUntil(' ');
+    Serial.println(sID);
+    //Serial.println(sID);
     if (sID[0] == '[') {
       //Serial.println(sID);
       SerialsID = ChecksID(sID, Sender_ID);
       if (SerialsID != -1) {
         rID = Serial.readStringUntil(' ');
         //Serial.println(rID);
+        if(rID == "PK1"){
+          Handshake();
+          return 1;
+        }
         SerialrID = CheckrID(rID, Device_ID);
         if (SerialrID != -1) {
           rPK_Size = Serial.readStringUntil(' ');
@@ -186,15 +208,16 @@ void ASerial::analyse() {
       Shutter();
       break;
     case 'R':
+      op = READ;
       readSensors();
       break;
     case 'D':
       op = DETAIL;
       ReturnDetails();
       break;
-    case 'E':
-      op = EXTRACT;
-      Extract();
+    case 'Y':
+      op = SYRINGE;
+      Syringe();
     default:
       break;
   }
@@ -273,13 +296,16 @@ void ASerial::Shutter() {
   //Serial.println(shutterPos);
 }
 
-void ASerial::Extract()
+void ASerial::Syringe()
 {
   String rubbish;
-  extract = Command[1] - '0';
+  syringe = Command[1] - '0';
   rubbish = readStringuntil(Command, 'S');
   Command.remove(0, rubbish.length());
-  extractPos = readStringuntil(Command,' ').toInt();
+  syringeVolume = readStringuntil(Command, ' ').toFloat();
+  rubbish = readStringuntil(Command, 'D');
+  Command.remove(0, rubbish.length());
+  syringeDir = readStringuntil(Command, ' ').toFloat();
 }
 
 void ASerial::readSensors() {
@@ -292,7 +318,7 @@ void ASerial::readSensors() {
     SenVal = SenVal + " B" + (String)(i + 1) + " S" + (String)BubbleVal[i];
   }
   for (int i = 0; i < NumLDS; i++) {
-    SenVal = SenVal + " L" + (String)(i + 1) + " S" + (String)LDSVal[i];
+    SenVal = SenVal + " L" + (String)(i+1) + " S" + (String)LDSVal[i];
   }
   SenVal = SenVal + "]";
   Serial.println(SenVal);
@@ -382,9 +408,17 @@ int ASerial::getShutter() {
 int ASerial::getShutterPos() {
   return shutterPos;
 }
-int ASerial::getExtractPos()
+float ASerial::getSyringeVolume()
 {
-  return extractPos;
+  return syringeVolume;
+}
+int ASerial::getSyringe()
+{
+  return syringe;
+}
+int ASerial::getSyringeDir()
+{
+  return syringeDir;
 }
 int ASerial::GetCommand() {
   int S = process();

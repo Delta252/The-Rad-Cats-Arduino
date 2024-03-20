@@ -21,6 +21,7 @@ void Pump::setUp(void) {
 // Set direction and volume of pump
 void Pump::set_vol(float vol, bool direc) {
   //Serial.println(vol);
+  //Serial.println(pump_type);
   if(vol<0){
     volume = -vol;
   }

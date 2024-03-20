@@ -5,5 +5,6 @@ void LDSensor:: setUp() {
 }
 
 bool LDSensor:: StatusLDS () {
+  Serial.println(digitalRead(Input));
   return digitalRead(Input);
 }

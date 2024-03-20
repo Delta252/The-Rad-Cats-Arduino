@@ -10,7 +10,7 @@ enum operation {
   MIXER,
   DETAIL,
   READ,
-  EXTRACT,
+  SYRINGE,
 };
 
 enum SENSOR {
@@ -24,6 +24,8 @@ class ASerial {
   private:
     //Flushes the serial port of any unwanted data
     void serialFlush();
+
+    int Handshake();
 
     //Checks to see if the receiver ID matches that of the device
     int CheckrID(String rID, int Device_ID);
@@ -50,6 +52,7 @@ class ASerial {
     int NumBubble;
     int NumLDS;
     int NumMixer;
+    int NumSyringe;
     int intPin;
     int ResPin;
 
@@ -74,14 +77,15 @@ class ASerial {
     int shutter;
     int shutterPos;
 
-    int extract;
-    int extractPos;
+    int syringe;
+    float syringeVolume;
+    int syringeDir;
 
     void Pump();
     void Mixer();
     void Valve();
     void Shutter();
-    void Extract();
+    void Syringe();
 
     void readSensors();
 
@@ -108,7 +112,7 @@ class ASerial {
     void analyse();
 
   public:
-    ASerial(String DD, int rID, int sID, int P, int V, int I, int T, int B, int L, int M, int Res);
+    ASerial(String DD, int rID, int sID, int P, int V, int I, int T, int B, int L, int M, int S, int Res);
 
     //Error handler
     void Error(int code);
@@ -156,6 +160,8 @@ class ASerial {
     int getShutter();
     int getShutterPos();
 
-    int getExtractPos();
+    float getSyringeVolume();
+    int getSyringe();
+    int getSyringeDir();
 };
 #endif

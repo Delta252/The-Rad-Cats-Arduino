@@ -62,6 +62,7 @@ void loop() {
             shutter.moveto(120, 0); //change 0 to 1 for control
             break;
           case 2:
+          Serial.println("Hi");
             shutter.moveto(240, 0); //change 0 to 1 for control
             break;
           default:

@@ -5,24 +5,20 @@
 
 // Setup
 void Valve::setUp(void) {
-  Valve::myservo.attach(pinSer);
-  Valve::myservo.write(90); 
+  myservo.attach(pinSer);
+  myservo.write(90);
 }
 
 void Valve::set_pos(int pos) {
-  Valve::a=pos;
-  switch(pos) {
-    case 0:
-      Valve::myservo.write(angleOpen);
-      break;
-    case 1:
-      Valve::myservo.write(angleClose);
-      break;
-    case 2:
-      Valve::myservo.write(angleMid);
-      break;
-    default:
-      break;
+  a=pos;
+  if (pos == 0) { // If pos is open
+    myservo.write(angleOpen);
+  }
+  else if (pos == 1) { // If pos is closed
+    myservo.write(angleClose);
+  }
+  else if (pos == 2) { // If pos is middle
+    myservo.write(angleMid);
   }
 }
 
@@ -37,15 +33,14 @@ void Valve::set_angle_lims(int angle0, int angle1) { // Angle0 is for open, Angl
 
 // Get measurement of the servo motor (in degrees)
 int Valve::get_pos_analog(void) {
-  return Valve::myservo.read();
+  return myservo.read();
 }
 
 
 
 // Get state of valve (0 (open), 1 (closed), 2 (middle))
 int Valve::get_pos_digital(void) {
-  return Valve::a;
-  
+  return a;
 } // End function
 
 
