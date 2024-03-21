@@ -69,25 +69,25 @@ void loop() {
             Serial.println("valve angle:  " + (String)Valve1.get_pos_analog());
             break;
           case 2:
-            Valve2.set_pos(Device.getValveState());
+            valveController.openValve2();
             Serial.println("valve number: " + (String)Device.getValve());
             Serial.println("valve state:  " + (String)Valve2.get_pos_digital());
             Serial.println("valve angle:  " + (String)Valve2.get_pos_analog());
             break;
           case 3:
-            Valve3.set_pos(Device.getValveState());
+            valveController.openValve3();
             Serial.println("valve number: " + (String)Device.getValve());
             Serial.println("valve state:  " + (String)Valve3.get_pos_digital());
             Serial.println("valve angle:  " + (String)Valve3.get_pos_analog());
             break;
           case 4:
-            Valve4.set_pos(Device.getValveState());
+            valveController.openValve4();
             Serial.println("valve number: " + (String)Device.getValve());
             Serial.println("valve state:  " + (String)Valve4.get_pos_digital());
             Serial.println("valve angle:  " + (String)Valve4.get_pos_analog());
             break;
           case 5:
-            Valve5.set_pos(Device.getValveState());
+            valveController.openValve5();
             Serial.println("valve number: " + (String)Device.getValve());
             Serial.println("valve state:  " + (String)Valve5.get_pos_digital());
             Serial.println("valve angle:  " + (String)Valve5.get_pos_analog());

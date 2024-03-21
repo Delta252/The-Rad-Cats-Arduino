@@ -78,3 +78,43 @@ void ValveHandler::openValve1()
   V4.set_pos(1);
   V5.set_pos(1);
 }
+
+void ValveHandler::openValve2()
+{
+  //Open Valve 2, close other valves
+  V1.set_pos(1);
+  V2.set_pos(0);
+  V3.set_pos(1);
+  V4.set_pos(1);
+  V5.set_pos(1);
+}
+
+void ValveHandler::openValve3()
+{
+  //Open Valve 3, close other valves
+  V1.set_pos(1);
+  V2.set_pos(1);
+  V3.set_pos(0);
+  V4.set_pos(1);
+  V5.set_pos(1);
+}
+
+void ValveHandler::openValve4()
+{
+  //Open Valve 4, close other valves
+  V1.set_pos(1);
+  V2.set_pos(1);
+  V3.set_pos(1);
+  V4.set_pos(0);
+  V5.set_pos(1);
+}
+
+void ValveHandler::openValve5()
+{
+  //Open Valve 5, close other valves
+  V1.set_pos(1);
+  V2.set_pos(1);
+  V3.set_pos(1);
+  V4.set_pos(1);
+  V5.set_pos(0);
+}
