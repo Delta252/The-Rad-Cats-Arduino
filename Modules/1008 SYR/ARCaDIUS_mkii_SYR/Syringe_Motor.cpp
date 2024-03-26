@@ -1,10 +1,12 @@
 #include "Syringe_Motor.h"
 
-AccelStepper accelMotor(1, 8, 7);
+AccelStepper accelMotor(MOTOR_INTERFACE_TYPE, STEP, DIR);
 
 void StepperMotor::setUp(void)
 {
-  accelMotor.setEnablePin(4);
+  //Set enable pin to high
+  accelMotor.setEnablePin(ENABLE);
+  //Initialise parameters regarding speed
   accelMotor.setMaxSpeed(200);
   accelMotor.setSpeed(200);
   accelMotor.setAcceleration(200);
@@ -12,23 +14,20 @@ void StepperMotor::setUp(void)
 
 void StepperMotor::pumpVolume(float volume)
 {
-  //Will probably need to do some maths once calibrated to calculate volume through distance
-  float distanceToMove = volume;
+  float desiredStep = 0;
+  //Calculate distance needed to move
   if(volume != 0)
   {
-    distanceToMove = (volume + 0.0483) / 0.0011;
+    //Equation relating motor step and volume
+    desiredStep = (volume + 0.0483) / 0.0011;
   }
-  Serial.println(distanceToMove);
-  accelMotor.moveTo(distanceToMove);
+  //Set the desired step
+  Serial.println("Distance to move:" + (String)desiredStep);
+  accelMotor.moveTo(desiredStep);
 
+  //Run the motor until desiredStep is reached
   while(accelMotor.distanceToGo() != 0)
   {
     accelMotor.run();
   }
-}
-
-
-void StepperMotor::move()
-{
-  accelMotor.run();
 }
