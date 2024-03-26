@@ -36,9 +36,9 @@ void DallasTemperature::begin(void) {
 
     _wire->reset_search();
     devices = 0; // Reset the number of devices when we enumerate wire devices
-
     while (_wire->search(deviceAddress)) {
         if (validAddress(deviceAddress)) {
+
             if (!parasite && readPowerSupply(deviceAddress)) {
                 parasite = true;
             }
