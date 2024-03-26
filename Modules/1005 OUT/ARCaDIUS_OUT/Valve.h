@@ -77,5 +77,7 @@ class ValveHandler{
   void openValve4();
   void openValve5();
   void closeAllValves();
+
+  void setPositionOfValves(int valveStates[5]);
 };
 #endif

@@ -147,7 +147,7 @@ class ASerial {
     bool getPumpDir();
 
     int getValve();
-    bool getValveStates();
+    int getValveStates();
 
     int getMixer();
     int getMixerSpeed();

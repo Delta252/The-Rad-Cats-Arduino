@@ -129,3 +129,12 @@ void ValveHandler::closeAllValves()
   V4.set_pos(1);
   V5.set_pos(1);
 }
+
+void ValveHandler::setPositionOfValves(int valveStates[5])
+{
+  V1.set_pos(valveStates[0]);
+  V2.set_pos(valveStates[1]);
+  V3.set_pos(valveStates[2]);
+  V4.set_pos(valveStates[3]);
+  V5.set_pos(valveStates[4]);
+}

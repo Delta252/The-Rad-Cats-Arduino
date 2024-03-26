@@ -96,6 +96,7 @@ void loop() {
             Serial.println("valve angle:  " + (String)Valve5.get_pos_analog());
             break;
           default:
+            valveController.setPositionOfValves(Device.getValveStates());
             break;
         }
         

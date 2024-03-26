@@ -377,7 +377,7 @@ bool ASerial::getPumpDir() {
 int ASerial::getValve() {
   return (int)valveToOpen;
 }
-bool ASerial::getValveStates() {
+int ASerial::getValveStates() {
   return valveStates;
 }
 int ASerial::getMixer() {
