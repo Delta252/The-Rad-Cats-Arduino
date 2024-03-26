@@ -76,5 +76,6 @@ class ValveHandler{
   void openValve3();
   void openValve4();
   void openValve5();
+  void closeAllValves();
 };
 #endif

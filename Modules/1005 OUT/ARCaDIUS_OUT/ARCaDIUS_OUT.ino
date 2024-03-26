@@ -62,6 +62,8 @@ void loop() {
         break;
       case VALVE:
         switch (Device.getValve()) {//test [sID1000 rID1004 PK2 V1 S0]
+          case 0:
+            valveController.closeAllValves();
           case 1:
             valveController.openValve1();
             Serial.println("valve number: " + (String)Device.getValve());

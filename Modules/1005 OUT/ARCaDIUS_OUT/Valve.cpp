@@ -69,52 +69,63 @@ int Valve::get_lim(int pos) {
   }
 } // End function
 
+/*
+  ValveHandler::openvalveX()
+  Sets valve X to be open. If valve number > X, sets valve to the middle position.
+  If valve number < X, sets valve to the closed position.
+*/
+
 void ValveHandler::openValve1()
 {
-  //Open Valve 1, close other valves
   V1.set_pos(0);
-  V2.set_pos(1);
-  V3.set_pos(1);
-  V4.set_pos(1);
-  V5.set_pos(1);
+  V2.set_pos(2);
+  V3.set_pos(2);
+  V4.set_pos(2);
+  V5.set_pos(2);
 }
 
 void ValveHandler::openValve2()
 {
-  //Open Valve 2, close other valves
   V1.set_pos(1);
   V2.set_pos(0);
-  V3.set_pos(1);
-  V4.set_pos(1);
-  V5.set_pos(1);
+  V3.set_pos(2);
+  V4.set_pos(2);
+  V5.set_pos(2);
 }
 
 void ValveHandler::openValve3()
 {
-  //Open Valve 3, close other valves
   V1.set_pos(1);
   V2.set_pos(1);
   V3.set_pos(0);
-  V4.set_pos(1);
-  V5.set_pos(1);
+  V4.set_pos(2);
+  V5.set_pos(2);
 }
 
 void ValveHandler::openValve4()
 {
-  //Open Valve 4, close other valves
   V1.set_pos(1);
   V2.set_pos(1);
   V3.set_pos(1);
   V4.set_pos(0);
-  V5.set_pos(1);
+  V5.set_pos(2);
 }
 
 void ValveHandler::openValve5()
 {
-  //Open Valve 5, close other valves
   V1.set_pos(1);
   V2.set_pos(1);
   V3.set_pos(1);
   V4.set_pos(1);
   V5.set_pos(0);
+}
+
+//Closes all valves
+void ValveHandler::closeAllValves()
+{
+  V1.set_pos(1);
+  V2.set_pos(1);
+  V3.set_pos(1);
+  V4.set_pos(1);
+  V5.set_pos(1);
 }
