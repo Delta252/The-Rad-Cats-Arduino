@@ -1,28 +1,16 @@
 #include "Syringe_Motor.h"
 
-AF_Stepper motor(200, 1);
-
-void forwardstep()
-{
-  motor.onestep(FORWARD, SINGLE);
-}
-
-void backwardstep()
-{
-  motor.onestep(BACKWARD, SINGLE);
-}
-
-AccelStepper accelMotor(forwardstep, backwardstep);
+AccelStepper accelMotor(1, 8, 7);
 
 void StepperMotor::setUp(void)
 {
+  accelMotor.setEnablePin(4);
   accelMotor.setMaxSpeed(200);
   accelMotor.setSpeed(200);
   accelMotor.setAcceleration(200);
 }
 
-//bool dir = true means forward, dir = false means backwards.
-void StepperMotor::pumpVolume(float volume, uint16_t direction)
+void StepperMotor::pumpVolume(float volume)
 {
   //Will probably need to do some maths once calibrated to calculate volume through distance
   float distanceToMove = volume;
