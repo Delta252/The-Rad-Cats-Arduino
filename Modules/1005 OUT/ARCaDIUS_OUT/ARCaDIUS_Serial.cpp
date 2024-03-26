@@ -242,12 +242,23 @@ void ASerial::Pump() {
 
 void ASerial::Valve() {
   String rubbish;
-  valve = Command[1] - '0';
-  //Serial.println(valve);
-  rubbish = readStringuntil(Command, 'S');
-  Command.remove(0, rubbish.length());
-  valveState = Command[0] - '0';
-  //Serial.println(valveState);
+  valveToOpen = Command[1] - '0';
+  if(GetPKSize() == 2)
+  {
+    rubbish = readStringuntil(Command, 'S');
+    Command.remove(0, rubbish.length());
+    for(int i = 0; i < 5; i++)
+    {
+      int valveState = Command[0] - '0';
+      if(valveState >= 3 || valveState < 0)
+      {
+        Error(4);
+      }
+      valveStates[i] = Command[0] - '0';
+      Command.remove(0, 1);
+      Serial.println("Valve " + (String)i + " position is " + (String)valveStates[i]);
+    }
+  }
 }
 
 void ASerial::Mixer() {
@@ -305,6 +316,7 @@ void ASerial::updateSensors(SENSOR s, int Num, float Val) {
       LDSVal[Num-1] = Val;
       break;
     case TEMP:
+      Serial.println(Val);
       TempVal[Num-1] = Val;
       break;
     case BUBBLE:
@@ -363,10 +375,10 @@ bool ASerial::getPumpDir() {
   return pumpDir;
 }
 int ASerial::getValve() {
-  return (int)valve;
+  return (int)valveToOpen;
 }
-bool ASerial::getValveState() {
-  return valveState;
+bool ASerial::getValveStates() {
+  return valveStates;
 }
 int ASerial::getMixer() {
   return mixer;

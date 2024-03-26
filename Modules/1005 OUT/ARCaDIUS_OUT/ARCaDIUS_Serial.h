@@ -64,8 +64,8 @@ class ASerial {
     float pumpValue;
     int pumpDir;
 
-    int valve;
-    int valveState;
+    int valveToOpen;
+    int valveStates[5];
 
     int mixer;
     float mixerSpeed;
@@ -147,7 +147,7 @@ class ASerial {
     bool getPumpDir();
 
     int getValve();
-    bool getValveState();
+    bool getValveStates();
 
     int getMixer();
     int getMixerSpeed();

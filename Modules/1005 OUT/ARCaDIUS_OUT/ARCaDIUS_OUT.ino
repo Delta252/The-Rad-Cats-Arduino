@@ -61,6 +61,7 @@ void loop() {
       case MIXER: // Enter code for mixer here
         break;
       case VALVE:
+        Serial.println("Packet Size: " + (String)Device.GetPKSize());
         switch (Device.getValve()) {//test [sID1000 rID1004 PK2 V1 S0]
           case 0:
             valveController.closeAllValves();
