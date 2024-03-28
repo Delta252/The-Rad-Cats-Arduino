@@ -28,8 +28,6 @@ void Valve::set_pos(int pos) {
     default:
       break;
   }
-  Serial.println(pinSer);
-  Serial.println(get_pos_analog());
 }
 
 
