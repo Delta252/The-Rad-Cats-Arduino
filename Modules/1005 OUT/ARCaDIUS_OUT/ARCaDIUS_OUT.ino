@@ -61,30 +61,7 @@ void loop() {
       case MIXER: // Enter code for mixer here
         break;
       case VALVE:
-        Serial.println("Packet Size: " + (String)Device.GetPKSize());
-        switch (Device.getValve()) {//test [sID1000 rID1004 PK2 V1 S0]
-          case 0:
-            valveController.closeAllValves();
-          case 1:
-            valveController.openValve1();
-            break;
-          case 2:
-            valveController.openValve2();
-            break;
-          case 3:
-            valveController.openValve3();
-            break;
-          case 4:
-            valveController.openValve4();
-            break;
-          case 5:
-            valveController.openValve5();
-            break;
-          default:
-            valveController.setPositionOfValves(Device.getValveStates());
-            break;
-        }
-        
+        valveController.setPositionOfValves(Device.getValve());
         break;
       case SHUTTER: // Enter code for shutter here
         Serial.println("The shutter number is: " + (String)Device.getShutter());

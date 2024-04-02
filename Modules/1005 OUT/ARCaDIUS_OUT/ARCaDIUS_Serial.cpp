@@ -179,7 +179,11 @@ void ASerial::analyse() {
       break;
     case 'V':
       op = VALVE;
-      Valve();
+      OpenOneValve();
+      break;
+    case 'U':
+      op = VALVE;
+      OpenMultipleValves();
       break;
     case 'I':
       op = SHUTTER;
@@ -240,24 +244,45 @@ void ASerial::Pump() {
   //Serial.println(pumpDir);
 }
 
-void ASerial::Valve() {
-  String rubbish;
+void ASerial::OpenOneValve()
+{
+  //Get valve to open
   valveToOpen = Command[1] - '0';
-  if(GetPKSize() == 2)
+
+  //Set valve positions based on valve number
+  for(int i = 0; i < NumValve; i++)
   {
-    rubbish = readStringuntil(Command, 'S');
-    Command.remove(0, rubbish.length());
-    for(int i = 0; i < 5; i++)
+    //If i == valveToOpen then open, i < valveToOpen then close, i > valveToOpen then middle
+    if(i == valveToOpen)
     {
-      int valveState = Command[0] - '0';
-      if(valveState >= 3 || valveState < 0)
-      {
-        Error(4);
-      }
-      valveStates[i] = Command[0] - '0';
-      Command.remove(0, 1);
-      Serial.println("Valve " + (String)i + " position is " + (String)valveStates[i]);
+      valveStates[i] = 0;
     }
+    else if (i < valveToOpen)
+    {
+      valveStates[i] = 1;
+    }
+    else
+    {
+      valveStates[i] = 2;
+    }  
+  }
+}
+
+void ASerial::OpenMultipleValves()
+{
+  //Remove command bit
+  Command.remove(0, 1);
+  for(int i = 0; i < NumValve; i++)
+  {
+    int valveState = Command[0] - '0';
+    //If valve position is invalid, flag error (Does not prevent code from running)
+    if(valveState > 2 || valveState < 0)
+    {
+      Error(4);
+    }
+    //Put valve state in array and remove from command
+    valveStates[i] = Command[0] - '0';
+    Command.remove(0, 1);
   }
 }
 
@@ -316,7 +341,6 @@ void ASerial::updateSensors(SENSOR s, int Num, float Val) {
       LDSVal[Num-1] = Val;
       break;
     case TEMP:
-      Serial.println(Val);
       TempVal[Num-1] = Val;
       break;
     case BUBBLE:
@@ -375,9 +399,6 @@ bool ASerial::getPumpDir() {
   return pumpDir;
 }
 int ASerial::getValve() {
-  return (int)valveToOpen;
-}
-int ASerial::getValveStates() {
   return valveStates;
 }
 int ASerial::getMixer() {

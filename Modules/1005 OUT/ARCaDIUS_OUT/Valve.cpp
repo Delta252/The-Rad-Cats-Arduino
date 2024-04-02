@@ -68,66 +68,12 @@ int Valve::get_lim(int pos) {
 } // End function
 
 /*
-  ValveHandler::openvalveX()
-  Sets valve X to be open. If valve number > X, sets valve to the middle position.
-  If valve number < X, sets valve to the closed position.
+  ValveHandler::setPositionOfValves(int valveStates[5])
+
+  valveStates[5] : Array containing position of each individual valve. Array length of 5 because of the 5 valves in the output module.
+
+  Sets position of valves according to input array.
 */
-
-void ValveHandler::openValve1()
-{
-  V1.set_pos(0);
-  V2.set_pos(2);
-  V3.set_pos(2);
-  V4.set_pos(2);
-  V5.set_pos(2);
-}
-
-void ValveHandler::openValve2()
-{
-  V1.set_pos(1);
-  V2.set_pos(0);
-  V3.set_pos(2);
-  V4.set_pos(2);
-  V5.set_pos(2);
-}
-
-void ValveHandler::openValve3()
-{
-  V1.set_pos(1);
-  V2.set_pos(1);
-  V3.set_pos(0);
-  V4.set_pos(2);
-  V5.set_pos(2);
-}
-
-void ValveHandler::openValve4()
-{
-  V1.set_pos(1);
-  V2.set_pos(1);
-  V3.set_pos(1);
-  V4.set_pos(0);
-  V5.set_pos(2);
-}
-
-void ValveHandler::openValve5()
-{
-  V1.set_pos(1);
-  V2.set_pos(1);
-  V3.set_pos(1);
-  V4.set_pos(1);
-  V5.set_pos(0);
-}
-
-//Closes all valves
-void ValveHandler::closeAllValves()
-{
-  V1.set_pos(1);
-  V2.set_pos(1);
-  V3.set_pos(1);
-  V4.set_pos(1);
-  V5.set_pos(1);
-}
-
 void ValveHandler::setPositionOfValves(int valveStates[5])
 {
   V1.set_pos(valveStates[0]);

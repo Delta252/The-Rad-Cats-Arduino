@@ -60,6 +60,8 @@ class Valve{
     int get_lim(int pos);
 };
 
+
+//Valve handler class to handle logic of valves on firmware side. Can increase number of valves if needed, but functions will also need to change to reflect this.
 class ValveHandler{
   private:
   Valve V1;
@@ -69,14 +71,7 @@ class ValveHandler{
   Valve V5;
   public:
 // Constructor and initial settings
-    ValveHandler(Valve Valve1, Valve Valve2, Valve Valve3, Valve Valve4, Valve Valve5):V1(Valve1), V2(Valve2), V3(Valve3), V4(Valve4), V5(Valve5){}
-
-  void openValve1();
-  void openValve2();
-  void openValve3();
-  void openValve4();
-  void openValve5();
-  void closeAllValves();
+  ValveHandler(Valve Valve1, Valve Valve2, Valve Valve3, Valve Valve4, Valve Valve5):V1(Valve1), V2(Valve2), V3(Valve3), V4(Valve4), V5(Valve5){}
 
   void setPositionOfValves(int valveStates[5]);
 };

@@ -64,7 +64,9 @@ class ASerial {
     float pumpValue;
     int pumpDir;
 
+    int valve;
     int valveToOpen;
+    //IF NUMBER OF VALVES CHANGE, CHANGE ARRAY SIZE
     int valveStates[5];
 
     int mixer;
@@ -79,7 +81,8 @@ class ASerial {
 
     void Pump();
     void Mixer();
-    void Valve();
+    void OpenOneValve();
+    void OpenMultipleValves();
     void Shutter();
     void Extract();
 
@@ -147,7 +150,6 @@ class ASerial {
     bool getPumpDir();
 
     int getValve();
-    int getValveStates();
 
     int getMixer();
     int getMixerSpeed();
