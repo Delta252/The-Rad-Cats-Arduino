@@ -5,6 +5,7 @@ AccelStepper accelMotor(MOTOR_INTERFACE_TYPE, STEP, DIR);
 void StepperMotor::setUp(void)
 {
   //Set enable pin to high
+  accelMotor.setPinsInverted(false, false, true);
   accelMotor.setEnablePin(ENABLE);
   //Initialise parameters regarding speed
   accelMotor.setMaxSpeed(200);
