@@ -226,12 +226,9 @@ String readStringuntil(String s, char c) {
 
 void ASerial::Pump() {
   String rubbish;
-  pump = Command[1] - '0';
-  //Serial.println(pump);
   rubbish = readStringuntil(Command, 'm');
   Command.remove(0, rubbish.length());
   pumpValue = readStringuntil(Command, ' ').toFloat();
-  //Serial.println(pumpValue);
   rubbish = readStringuntil(Command, 'D');
   Command.remove(0, rubbish.length());
   if (pumpValue > 0) {
@@ -240,24 +237,26 @@ void ASerial::Pump() {
   else {
     pumpDir = 0;
   }
-  //pumpDir = Command[0] - '0';
-  //Serial.println(pumpDir);
 }
 
 void ASerial::OpenOneValve()
 {
+  String rubbish;
+  rubbish = readStringuntil(Command, 'S');
+  //Remove command bit
+  Command.remove(0, rubbish.length());
   //Get valve to open
-  valveToOpen = Command[1] - '0';
+  valveToOpen = Command[0] - '0';
 
   //Set valve positions based on valve number
   for(int i = 0; i < NumValve; i++)
   {
     //If i == valveToOpen then open, i < valveToOpen then close, i > valveToOpen then middle
-    if(i == valveToOpen)
+    if(i + 1 == valveToOpen)
     {
       valveStates[i] = 0;
     }
-    else if (i < valveToOpen)
+    else if (i + 1 < valveToOpen)
     {
       valveStates[i] = 1;
     }
@@ -270,8 +269,10 @@ void ASerial::OpenOneValve()
 
 void ASerial::OpenMultipleValves()
 {
+  String rubbish;
+  rubbish = readStringuntil(Command, 'S');
   //Remove command bit
-  Command.remove(0, 1);
+  Command.remove(0, rubbish.length());
   for(int i = 0; i < NumValve; i++)
   {
     int valveState = Command[0] - '0';

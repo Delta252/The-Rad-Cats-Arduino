@@ -18,7 +18,7 @@ class MixerMotor
 
   void StopMotor();
 
-  void SetSpeed(int PWM);
+  void SetSpeed(int PWM, int mixerDir);
 
 };
 #endif

@@ -50,13 +50,7 @@ void loop() {
     Device.updateSensors(TEMP, 1, sensors.getTempCByIndex(0));
     switch (Device.GetCommand()) {
       case PUMP: 
-        switch (Device.getPump()) {//[sID1000 rID1004 PK3 P1 m5.00]
-          case 1:
-            P1.set_vol(Device.getPumpMls(),Device.getPumpDir());
-            break;
-          default:
-            break;
-        }
+        P1.set_vol(Device.getPumpMls(),Device.getPumpDir());
         break;
       case MIXER: // Enter code for mixer here
         break;
