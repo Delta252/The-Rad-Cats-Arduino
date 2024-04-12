@@ -44,7 +44,8 @@ void loop() {
       case SYRINGE:
         Serial.println("The Syringe number is: " + (String)Device.getSyringe());
         Serial.println("The Syringe volume is: " + (String)Device.getSyringeVolume());
-        myMotor.pumpVolume(Device.getSyringeVolume());
+        Serial.println("The Syringe Type is: " + (String)Device.getSyringeType());
+        myMotor.pumpVolume(Device.getSyringeVolume(), Device.getSyringeType());
         break;
       default: // Leave this, its just the default //[sID1000 rID1006 PK2 E1 S0]
         break;

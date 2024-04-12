@@ -299,13 +299,12 @@ void ASerial::Shutter() {
 void ASerial::Syringe()
 {
   String rubbish;
-  syringe = Command[1] - '0';
+  rubbish = readStringuntil(Command, 'S');
+  Command.remove(0, rubbish.length());
+  syringeType = readStringuntil(Command, ' ').toFloat();
   rubbish = readStringuntil(Command, 'm');
   Command.remove(0, rubbish.length());
   syringeVolume = readStringuntil(Command, ' ').toFloat();
-  rubbish = readStringuntil(Command, 'D');
-  Command.remove(0, rubbish.length());
-  syringeDir = readStringuntil(Command, ' ').toFloat();
 }
 
 void ASerial::readSensors() {
@@ -416,9 +415,9 @@ int ASerial::getSyringe()
 {
   return syringe;
 }
-int ASerial::getSyringeDir()
+int ASerial::getSyringeType()
 {
-  return syringeDir;
+  return syringeType;
 }
 int ASerial::GetCommand() {
   int S = process();
