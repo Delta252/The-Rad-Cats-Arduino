@@ -3,7 +3,7 @@
 #include "Pump.h"
 #include "Valve.h"
 
-String DeviceDesc = "Module = Output";
+String DeviceDesc = "Module = Extract";
 int Device_ID = 1007;
 int Sender_ID = 1000;
 int Num_of_Pumps = 1;
@@ -34,13 +34,7 @@ void loop() {
       case PUMP: 
         Serial.println("pump number: " + (String)Device.getPump());
         Serial.println("pump volume: " + (String)Device.getPumpMls());
-        switch (Device.getPump()) {
-          case 5:
-            P5.set_vol(Device.getPumpMls(),Device.getPumpDir());
-            break;
-          default:
-            break;
-        }
+        P5.set_vol(Device.getPumpMls(),Device.getPumpDir());
         break;
       case MIXER: // Enter code for mixer here
         Serial.println("The mixer number is: " + (String)Device.getMixer());

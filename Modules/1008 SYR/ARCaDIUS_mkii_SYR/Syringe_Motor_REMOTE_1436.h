@@ -1,14 +1,11 @@
 #include <Arduino.h>
 #include "AccelStepper.h"
+#include <AFMotor.h>
 
-
-//Motor interface type: 1 = Stepper driver
-#define MOTOR_INTERFACE_TYPE 1
-//Only change step, dir, or enable if the PCB changes the GPIO pins available to these 
-#define STEP 8
-#define DIR 7
-#define ENABLE 4
-
+#define MOTORLATCH 12
+#define MOTORCLK 4
+#define MOTORENABLE 7
+#define MOTORDATA 8
 
 class StepperMotor
 {
@@ -20,6 +17,6 @@ class StepperMotor
     //Constructor
     StepperMotor(int servoPin, int inputAngle, int outputAngle): pinSer(servoPin), input(inputAngle), output(outputAngle);
     void setUp();
-    void pumpVolume(float volume);
+    void pumpVolume(float volume, uint16_t direction);
     void setValve(int pos);
 };

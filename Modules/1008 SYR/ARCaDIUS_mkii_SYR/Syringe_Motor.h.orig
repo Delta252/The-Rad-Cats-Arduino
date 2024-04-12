@@ -13,13 +13,21 @@
 class StepperMotor
 {
     private:
+<<<<<<< Updated upstream
+=======
     int pinSer;
     int input;
     int output;
+>>>>>>> Stashed changes
     public:
     //Constructor
     StepperMotor(int servoPin, int inputAngle, int outputAngle): pinSer(servoPin), input(inputAngle), output(outputAngle);
     void setUp();
+<<<<<<< Updated upstream
     void pumpVolume(float volume);
+    void move();
+=======
+    void pumpVolume(float volume, uint16_t direction);
     void setValve(int pos);
+>>>>>>> Stashed changes
 };

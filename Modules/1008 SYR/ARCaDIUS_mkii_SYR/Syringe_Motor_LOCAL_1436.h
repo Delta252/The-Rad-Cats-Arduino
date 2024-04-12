@@ -13,13 +13,10 @@
 class StepperMotor
 {
     private:
-    int pinSer;
-    int input;
-    int output;
     public:
     //Constructor
-    StepperMotor(int servoPin, int inputAngle, int outputAngle): pinSer(servoPin), input(inputAngle), output(outputAngle);
+    StepperMotor() = default;
     void setUp();
     void pumpVolume(float volume);
-    void setValve(int pos);
+    void move();
 };
