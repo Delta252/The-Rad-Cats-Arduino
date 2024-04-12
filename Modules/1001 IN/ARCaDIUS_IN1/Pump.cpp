@@ -51,8 +51,10 @@ void Pump::set_vol(float vol, bool direc) {
     digitalWrite(EN, LOW);
     digitalWrite(dirStep, direc);
     for (uint32_t i = 0; i < volume * steps_per_ml; i++) {
+    Serial.println("1: " + (String)digitalRead(8));
       digitalWrite(Step, HIGH);
       delay(1);
+    Serial.println("2: " + (String)digitalRead(8));
       digitalWrite(Step, LOW);
       delay(1);
     }

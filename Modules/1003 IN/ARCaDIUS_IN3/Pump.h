@@ -15,7 +15,7 @@ class Pump {
     bool dir = 0;
     int Stop = 1500; // Stopping value for servo pump
     double conv_ratio = 0.0052;   // conversions of servo (?) to ml
-    double steps_per_ml = 1648.8; // Number of steps per ml
+    double steps_per_ml = 1900; // Number of steps per ml
 
     int StepsPerRev = 3200;
     int dirStep = 5;            // Pin number for direction - SET TO 5

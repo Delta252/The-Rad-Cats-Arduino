@@ -15,7 +15,7 @@ int Num_of_Syringe = 1;
 int ResetPin = 3;
 
 ASerial Device(DeviceDesc, Device_ID, Sender_ID, Num_of_Pumps, Num_of_Valves, Num_of_Shutter, Num_of_Temp, Num_of_Bubble, Num_of_LDS, Num_of_Mixer, Num_of_Syringe, ResetPin);
-StepperMotor myMotor;
+StepperMotor myMotor(12, 60, 180);
 
 void setup() {
   Serial.begin(115200);
@@ -44,8 +44,7 @@ void loop() {
       case SYRINGE:
         Serial.println("The Syringe number is: " + (String)Device.getSyringe());
         Serial.println("The Syringe volume is: " + (String)Device.getSyringeVolume());
-        Serial.println("The Syringe direction is: " + (String)Device.getSyringeDir());
-        myMotor.pumpVolume(Device.getSyringeVolume(), Device.getSyringeDir());
+        myMotor.pumpVolume(Device.getSyringeVolume());
         break;
       default: // Leave this, its just the default //[sID1000 rID1006 PK2 E1 S0]
         break;

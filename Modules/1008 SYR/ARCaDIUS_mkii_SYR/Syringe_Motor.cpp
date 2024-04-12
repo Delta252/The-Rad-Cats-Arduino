@@ -1,46 +1,54 @@
 #include "Syringe_Motor.h"
 
-AF_Stepper motor(200, 1);
-
-void forwardstep()
-{
-  motor.onestep(FORWARD, SINGLE);
-}
-
-void backwardstep()
-{
-  motor.onestep(BACKWARD, SINGLE);
-}
-
-AccelStepper accelMotor(forwardstep, backwardstep);
+AccelStepper accelMotor(MOTOR_INTERFACE_TYPE, STEP, DIR);
 
 void StepperMotor::setUp(void)
 {
-  accelMotor.setMaxSpeed(100);
-  accelMotor.setSpeed(100);
-  accelMotor.setAcceleration(100);
+  pumpValve.attach(pinSer);
+  pumpValve.write(ANGLE_OUTPUT);
+  delay(500);
+  pumpValve.write(ANGLE_INPUT); 
+  delay(500);
+  pumpValve.write(ANGLE_MIDDLE); 
+  //Initialise parameters regarding speed
+  accelMotor.setMaxSpeed(200);
+  accelMotor.setSpeed(200);
+  accelMotor.setAcceleration(200);
 }
 
-//bool dir = true means forward, dir = false means backwards.
-void StepperMotor::pumpVolume(float volume, uint16_t direction)
+void StepperMotor::pumpVolume(float volume)
 {
-  //Will probably need to do some maths once calibrated to calculate volume through distance
-  float distanceToMove = volume;
-  // if(volume != 0)
-  // {
-  //   distanceToMove = (volume / 0.01964) * 20;
-  // }
-  Serial.println(distanceToMove);
-  accelMotor.moveTo(distanceToMove);
+  float desiredStep = 0;
+  //Calculate distance needed to move
+  desiredStep = (volume + 0.0483) / 0.0011;
+  if(volume > 0)
+  {
+    //Equation relating motor step and volume
+    pumpValve.write(ANGLE_INPUT);
+  Serial.println("INPUT");
+  }
+  else if(volume < 0)
+  {
+    pumpValve.write(ANGLE_OUTPUT);
+  Serial.println("OUTPUT");
+  }
+  else
+  {
+    pumpValve.write(ANGLE_OUTPUT);
+  Serial.println("DRAIN");
+    desiredStep = 0;
+  }
+  //Set the desired step
+  Serial.println("Distance to move:" + (String)desiredStep);
+  accelMotor.moveTo(desiredStep);
 
   while(accelMotor.distanceToGo() != 0)
   {
     accelMotor.run();
   }
 }
-
-
-void StepperMotor::move()
+  //Run the motor until desiredStep is reached
+void StepperMotor::setValve(int pos)
 {
-  accelMotor.run();
+
 }
