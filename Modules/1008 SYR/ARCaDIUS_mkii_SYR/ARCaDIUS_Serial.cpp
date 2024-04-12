@@ -300,7 +300,7 @@ void ASerial::Syringe()
 {
   String rubbish;
   syringe = Command[1] - '0';
-  rubbish = readStringuntil(Command, 'S');
+  rubbish = readStringuntil(Command, 'm');
   Command.remove(0, rubbish.length());
   syringeVolume = readStringuntil(Command, ' ').toFloat();
   rubbish = readStringuntil(Command, 'D');
