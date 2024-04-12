@@ -179,13 +179,18 @@ void ASerial::analyse() {
       break;
     case 'V':
       op = VALVE;
-      Valve();
+      OpenOneValve();
+      break;
+    case 'U':
+      op = VALVE;
+      OpenMultipleValves();
       break;
     case 'I':
       op = SHUTTER;
       Shutter();
       break;
     case 'R':
+      op = READ;
       readSensors();
       break;
     case 'D':
@@ -239,14 +244,43 @@ void ASerial::Pump() {
   //Serial.println(pumpDir);
 }
 
-void ASerial::Valve() {
+void ASerial::OpenOneValve()
+{
   String rubbish;
-  valve = Command[1] - '0';
-  //Serial.println(valve);
-  rubbish = readStringuntil(Command, 'S');
-  Command.remove(0, rubbish.length());
-  valveState = Command[0] - '0';
-  //Serial.println(valveState);
+  valveToOpen = Command[1] - '0';
+  Serial.println(valveToOpen);
+  for(int i = 0; i < NumValve; i++)
+  {
+    if(i == valveToOpen)
+    {
+      valveStates[i] = 0;
+    }
+    else if (i < valveToOpen)
+    {
+      valveStates[i] = 1;
+    }
+    else
+    {
+      valveStates[i] = 2;
+    }  
+  }
+}
+
+void ASerial::OpenMultipleValves()
+{
+  for(int i = 0; i < NumValve; i++)
+  {
+    int valveState = Command[0] - '0';
+    //If valve position is invalid, throw error
+    if(valveState > 2 || valveState < 0)
+    {
+      Error(4);
+    }
+    //Put valve state in array and remove from command
+    valveStates[i] = Command[0] - '0';
+    Command.remove(0, 1);
+    Serial.println("Valve " + (String)i + " position is " + (String)valveStates[i]);
+  }
 }
 
 void ASerial::Mixer() {
@@ -362,10 +396,7 @@ bool ASerial::getPumpDir() {
   return pumpDir;
 }
 int ASerial::getValve() {
-  return (int)valve;
-}
-bool ASerial::getValveState() {
-  return valveState;
+  return valveStates;
 }
 int ASerial::getMixer() {
   return mixer;

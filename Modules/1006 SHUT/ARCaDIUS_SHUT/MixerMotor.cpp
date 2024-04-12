@@ -14,11 +14,17 @@ void MixerMotor:: StopMotor(){
   digitalWrite(MP2,LOW);
 }
  
-void MixerMotor:: SetSpeed(int PWM) {
+void MixerMotor:: SetSpeed(int PWM, int mixerDir) {
   analogWrite(E,PWM);
   delay(500);
-  digitalWrite(MP1,HIGH); //one way
-  digitalWrite(MP2,LOW);
-  // delay(500);
-  // analogWrite(E,PWM);
+  if(mixerDir == 0)
+  {
+    digitalWrite(MP1,HIGH); //one way
+    digitalWrite(MP2,LOW);
+  }
+  else if (mixerDir == 1)
+  {
+    digitalWrite(MP1,LOW); //one way
+    digitalWrite(MP2,HIGH);
+  }
 }

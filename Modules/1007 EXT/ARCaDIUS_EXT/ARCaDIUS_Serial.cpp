@@ -277,7 +277,6 @@ void ASerial::Shutter() {
 void ASerial::Extract()
 {
   String rubbish;
-  extract = Command[1] - '0';
   rubbish = readStringuntil(Command, 'S');
   Command.remove(0, rubbish.length());
   extractPos = readStringuntil(Command,' ').toInt();
@@ -395,11 +394,6 @@ int ASerial::GetCommand() {
     return op;
   }
   return -1;
-}
-
-int ASerial::getExtractPos()
-{
-  return extractPos;
 }
 
 void ASerial::FinishedCommand() {

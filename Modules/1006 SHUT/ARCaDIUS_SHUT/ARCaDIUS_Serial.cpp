@@ -266,7 +266,6 @@ void ASerial::Mixer() {
 
 void ASerial::Shutter() {
   String rubbish;
-  shutter = Command[1] - '0';
   //Serial.println(shutter);
   rubbish = readStringuntil(Command, 'S');
   Command.remove(0, rubbish.length());

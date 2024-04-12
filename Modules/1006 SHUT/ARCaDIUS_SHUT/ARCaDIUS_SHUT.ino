@@ -42,7 +42,7 @@ void loop() {
           MagMix.StopMotor();
         }
         else {
-          MagMix.SetSpeed(Device.getMixerSpeed());
+          MagMix.SetSpeed(Device.getMixerSpeed(), Device.getMixerDir());
         }
         break;
 
@@ -51,7 +51,6 @@ void loop() {
         break;
 
       case SHUTTER:  
-        Serial.println("The shutter number is: " + (String)Device.getShutter());
         Serial.println("Shutter position: " + (String)Device.getShutterPos());
         //[sID1000 rID1005 PK3 I1 S1]
         switch (Device.getShutterPos()) {
@@ -62,13 +61,11 @@ void loop() {
             shutter.moveto(120, 0); //change 0 to 1 for control
             break;
           case 2:
-          Serial.println("Hi");
             shutter.moveto(240, 0); //change 0 to 1 for control
             break;
           default:
             break;
         }
-
       default: // Leave this, its just the default
         break;
     }

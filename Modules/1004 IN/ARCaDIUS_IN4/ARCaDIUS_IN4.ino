@@ -34,17 +34,7 @@ void loop() {
     //[sID1000 rID1001 PK1 R]   
     switch (Device.GetCommand()) {      
       case PUMP: //[sID1000 rID1001 PK2 P1 m3.0]
-        /*
-        Serial.println("The pump number is: " + (String)Device.getPump());
-        Serial.println("The pump volume in mls is: " + (String)Device.getPumpMls());
-        Serial.println("The pump direction is: " + (String)Device.getPumpDir());*/
-        switch (Device.getPump()) {
-          case 1:
-            P1.set_vol(Device.getPumpMls(),Device.getPumpDir());
-            break;
-          default:
-            break;
-        }
+        P1.set_vol(Device.getPumpMls(),Device.getPumpDir());
         break;
       case MIXER: //[sID1000 rID1001 PK3 M1 S1 D1]
         break;

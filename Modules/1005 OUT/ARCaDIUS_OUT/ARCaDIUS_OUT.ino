@@ -25,6 +25,7 @@ Valve Valve2(5, 65, 127);
 Valve Valve3(6, 65, 128);
 Valve Valve4(9, 65, 127);
 Valve Valve5(10, 66, 130);
+ValveHandler valveController(Valve1, Valve2, Valve3, Valve4, Valve5);
 Pump P1(11);
 
 void setup() {
@@ -49,52 +50,12 @@ void loop() {
     Device.updateSensors(TEMP, 1, sensors.getTempCByIndex(0));
     switch (Device.GetCommand()) {
       case PUMP: 
-        switch (Device.getPump()) {//[sID1000 rID1004 PK3 P1 m5.00]
-          case 1:
-            P1.set_vol(Device.getPumpMls(),Device.getPumpDir());
-            break;
-          default:
-            break;
-        }
+        P1.set_vol(Device.getPumpMls(),Device.getPumpDir());
         break;
       case MIXER: // Enter code for mixer here
         break;
       case VALVE:
-        switch (Device.getValve()) {//test [sID1000 rID1004 PK2 V1 S0]
-          case 1:
-            Valve1.set_pos(Device.getValveState());
-            Serial.println("valve number: " + (String)Device.getValve());
-            Serial.println("valve state:  " + (String)Valve1.get_pos_digital());
-            Serial.println("valve angle:  " + (String)Valve1.get_pos_analog());
-            break;
-          case 2:
-            Valve2.set_pos(Device.getValveState());
-            Serial.println("valve number: " + (String)Device.getValve());
-            Serial.println("valve state:  " + (String)Valve2.get_pos_digital());
-            Serial.println("valve angle:  " + (String)Valve2.get_pos_analog());
-            break;
-          case 3:
-            Valve3.set_pos(Device.getValveState());
-            Serial.println("valve number: " + (String)Device.getValve());
-            Serial.println("valve state:  " + (String)Valve3.get_pos_digital());
-            Serial.println("valve angle:  " + (String)Valve3.get_pos_analog());
-            break;
-          case 4:
-            Valve4.set_pos(Device.getValveState());
-            Serial.println("valve number: " + (String)Device.getValve());
-            Serial.println("valve state:  " + (String)Valve4.get_pos_digital());
-            Serial.println("valve angle:  " + (String)Valve4.get_pos_analog());
-            break;
-          case 5:
-            Valve5.set_pos(Device.getValveState());
-            Serial.println("valve number: " + (String)Device.getValve());
-            Serial.println("valve state:  " + (String)Valve5.get_pos_digital());
-            Serial.println("valve angle:  " + (String)Valve5.get_pos_analog());
-            break;
-          default:
-            break;
-        }
-        
+        valveController.setPositionOfValves(Device.getValve());
         break;
       case SHUTTER: // Enter code for shutter here
         Serial.println("The shutter number is: " + (String)Device.getShutter());

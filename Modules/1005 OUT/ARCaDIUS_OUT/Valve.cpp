@@ -66,3 +66,19 @@ int Valve::get_lim(int pos) {
     return angleMid;
   }
 } // End function
+
+/*
+  ValveHandler::setPositionOfValves(int valveStates[5])
+
+  valveStates[5] : Array containing position of each individual valve. Array length of 5 because of the 5 valves in the output module.
+
+  Sets position of valves according to input array.
+*/
+void ValveHandler::setPositionOfValves(int valveStates[5])
+{
+  V1.set_pos(valveStates[0]);
+  V2.set_pos(valveStates[1]);
+  V3.set_pos(valveStates[2]);
+  V4.set_pos(valveStates[3]);
+  V5.set_pos(valveStates[4]);
+}
