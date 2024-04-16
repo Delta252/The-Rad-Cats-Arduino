@@ -13,6 +13,7 @@ void StepperMotor::setUp(void)
   pumpValve.write(ANGLE_MIDDLE); 
 
   //Initialise motor acceleration
+  accelMotor.setMaxSpeed(80);
   accelMotor.setAcceleration(60);
 
 

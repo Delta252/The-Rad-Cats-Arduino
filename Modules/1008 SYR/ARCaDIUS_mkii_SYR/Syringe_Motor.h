@@ -11,7 +11,7 @@
 
 //Angle defines for servo motor
 #define ANGLE_INPUT 0
-#define ANGLE_OUTPUT 80
+#define ANGLE_OUTPUT 70
 #define ANGLE_MIDDLE 40
 
 //Syringe type defines
