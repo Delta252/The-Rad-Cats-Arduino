@@ -9,7 +9,7 @@
 #define DIR 7
 #define ENABLE 4
 
-//Angle defines
+//Angle defines for servo motor
 #define ANGLE_INPUT 0
 #define ANGLE_OUTPUT 80
 #define ANGLE_MIDDLE 40
@@ -24,10 +24,19 @@ enum SYRINGE_TYPE
 };
 
 //Syringe calibration defines
-#define CONCENTRIC5ML_SYRINGE_VAL 0.0483
-#define CONCENTRIC2ML_SYRINGE_VAL 0 //TBD
-#define ECCENTRIC10ML_SYRINGE_VAL 0 //TBD
+#define CONCENTRIC5ML_SYRINGE_VAL_CONSTANT 0.0188
+#define CONCENTRIC2ML_SYRINGE_VAL_CONSTANT 0
+#define ECCENTRIC10ML_SYRINGE_VAL_CONSTANT 0.08
 
+#define CONCENTRIC5ML_SYRINGE_VAL_DIVISOR 0.011
+#define CONCENTRIC2ML_SYRINGE_VAL_DIVISOR 1 //TBD
+#define ECCENTRIC10ML_SYRINGE_VAL_DIVISOR 0.017
+
+#define CONCENTRIC5ML_SYRINGE_MAX_SPEED 120
+#define CONCENTRIC2ML_SYRINGE_MAX_SPEED 0 //TBD
+#define ECCENTRIC10ML_SYRINGE_MAX_SPEED 60
+
+//Input/Output
 #define INPUT true
 #define OUTPUT false
 
@@ -36,12 +45,10 @@ class StepperMotor
 {
     private:
     int pinSer;
-    int input;
-    int output;
     Servo pumpValve;
     public:
-    //Constructor
-    StepperMotor(int servoPin, int inputAngle, int outputAngle): pinSer(servoPin), input(inputAngle), output(outputAngle){}
+    //Constructor, pass through the pin the servo is connected to
+    StepperMotor(int servoPin): pinSer(servoPin){}
     void setUp();
     void pumpVolume(float volume, int syringeType);
     void setValve(bool IO);

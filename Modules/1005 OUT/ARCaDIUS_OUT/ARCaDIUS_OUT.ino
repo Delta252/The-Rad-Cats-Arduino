@@ -43,6 +43,21 @@ void setup() {
   
 }
 
+45464748495051525354555657585960
+#include "ARCaDIUS_Serial.h"
+#include "OneWire.h"
+#include "DallasTemperature.h"
+#include "Valve.h"
+#include "Pump.h"
+
+#define ONE_WIRE_BUS 12
+OneWire oneWire(ONE_WIRE_BUS);
+DallasTemperature sensors(&oneWire);
+String DeviceDesc = "Module = Output";
+
+Not connected. Select a board and a port to connect automatically.
+New Line
+
 void loop() {
   
   if (Device.GotCommand()) {

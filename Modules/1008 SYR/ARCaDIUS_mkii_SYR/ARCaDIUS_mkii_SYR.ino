@@ -15,7 +15,7 @@ int Num_of_Syringe = 1;
 int ResetPin = 3;
 
 ASerial Device(DeviceDesc, Device_ID, Sender_ID, Num_of_Pumps, Num_of_Valves, Num_of_Shutter, Num_of_Temp, Num_of_Bubble, Num_of_LDS, Num_of_Mixer, Num_of_Syringe, ResetPin);
-StepperMotor myMotor(12, 60, 180);
+StepperMotor myMotor(12);
 
 void setup() {
   Serial.begin(115200);

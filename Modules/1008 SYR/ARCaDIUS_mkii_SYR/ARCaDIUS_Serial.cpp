@@ -144,14 +144,7 @@ int ASerial::Handshake()
 }
 
 int ASerial::process() {
-  Serial.println("Here3");
   if (Serial.available() > 0 && Serial.peek() != 'C') {
-    Serial.println("Here2");
-    // if(baseCommand == "[sID1000 PK1 H0]"){
-    //   Handshake();
-    //   Serial.println("Here");
-    //   return 1;
-    // }
     sID = Serial.readStringUntil(' ');
     Serial.println(sID);
     //Serial.println(sID);
