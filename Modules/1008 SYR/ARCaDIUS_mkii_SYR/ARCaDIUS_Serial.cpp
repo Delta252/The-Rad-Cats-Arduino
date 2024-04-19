@@ -144,14 +144,7 @@ int ASerial::Handshake()
 }
 
 int ASerial::process() {
-  Serial.println("Here3");
   if (Serial.available() > 0 && Serial.peek() != 'C') {
-    Serial.println("Here2");
-    // if(baseCommand == "[sID1000 PK1 H0]"){
-    //   Handshake();
-    //   Serial.println("Here");
-    //   return 1;
-    // }
     sID = Serial.readStringUntil(' ');
     Serial.println(sID);
     //Serial.println(sID);
@@ -299,13 +292,12 @@ void ASerial::Shutter() {
 void ASerial::Syringe()
 {
   String rubbish;
-  syringe = Command[1] - '0';
+  rubbish = readStringuntil(Command, 'S');
+  Command.remove(0, rubbish.length());
+  syringeType = readStringuntil(Command, ' ').toFloat();
   rubbish = readStringuntil(Command, 'm');
   Command.remove(0, rubbish.length());
   syringeVolume = readStringuntil(Command, ' ').toFloat();
-  rubbish = readStringuntil(Command, 'D');
-  Command.remove(0, rubbish.length());
-  syringeDir = readStringuntil(Command, ' ').toFloat();
 }
 
 void ASerial::readSensors() {
@@ -416,9 +408,9 @@ int ASerial::getSyringe()
 {
   return syringe;
 }
-int ASerial::getSyringeDir()
+int ASerial::getSyringeType()
 {
-  return syringeDir;
+  return syringeType;
 }
 int ASerial::GetCommand() {
   int S = process();

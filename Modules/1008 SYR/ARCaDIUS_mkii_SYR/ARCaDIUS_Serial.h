@@ -79,7 +79,7 @@ class ASerial {
 
     int syringe;
     float syringeVolume;
-    int syringeDir;
+    int syringeType;
 
     void Pump();
     void Mixer();
@@ -162,6 +162,6 @@ class ASerial {
 
     float getSyringeVolume();
     int getSyringe();
-    int getSyringeDir();
+    int getSyringeType();
 };
 #endif
