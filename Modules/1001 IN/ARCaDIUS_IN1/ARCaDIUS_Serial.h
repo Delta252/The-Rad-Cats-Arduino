@@ -10,6 +10,8 @@ enum operation {
   MIXER,
   DETAIL,
   READ,
+  EXTRACT,
+  SYRINGE
 };
 
 enum SENSOR {
@@ -39,6 +41,7 @@ class ASerial {
     int Sender_ID;
     String sACK;
     String sBUSY;
+    String sCONF;
     String DeviceDesc;
 
     int NumPump;
@@ -48,8 +51,10 @@ class ASerial {
     int NumBubble;
     int NumLDS;
     int NumMixer;
+    int NumSyringe;
     int intPin;
     int ResPin;
+    bool isDeviceConnected;
 
     float* TempVal;
     float* BubbleVal;
@@ -63,7 +68,9 @@ class ASerial {
     int pumpDir;
 
     int valve;
-    int valveState;
+    int valveToOpen;
+    //IF NUMBER OF VALVES CHANGE, CHANGE ARRAY SIZE
+    int valveStates[5];
 
     int mixer;
     float mixerSpeed;
@@ -72,10 +79,19 @@ class ASerial {
     int shutter;
     int shutterPos;
 
+    int extract;
+    int extractPos;
+
+    float syringeVolume;
+    int syringeType;
+
     void Pump();
     void Mixer();
-    void Valve();
+    void OpenOneValve();
+    void OpenMultipleValves();
     void Shutter();
+    void Extract();
+    void Syringe();
 
     void readSensors();
 
@@ -102,7 +118,7 @@ class ASerial {
     void analyse();
 
   public:
-    ASerial(String DD, int rID, int sID, int P, int V, int I, int T, int B, int L, int M, int Res);
+    ASerial(String DD, int rID, int sID, int P, int V, int I, int T, int B, int L, int M, int S, int Res);
 
     //Error handler
     void Error(int code);
@@ -141,7 +157,6 @@ class ASerial {
     bool getPumpDir();
 
     int getValve();
-    bool getValveState();
 
     int getMixer();
     int getMixerSpeed();
@@ -149,5 +164,12 @@ class ASerial {
 
     int getShutter();
     int getShutterPos();
+
+    int getExtractPos();
+
+    float getSyringeVolume();
+    int getSyringeType();
+
+    bool GetDeviceConnectedStatus();
 };
 #endif
