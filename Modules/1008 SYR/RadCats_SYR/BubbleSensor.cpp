@@ -19,15 +19,15 @@
     } 
     average = (total/20)*10;
     Serial.println(average);
-     if (average > 130) {
+     if (average > 150) {
        Serial.println("Tube present, no liquid");
        return 1;
      }
-     else if (average < 125){
+     else if (average < 120){
        Serial.println("Tube and liquid present");
        return 2;
      }
-     else if (average >  125 && average < 130){
+     else if (average >  120 && average < 150){
        Serial.println("No tube present");
        return 3;
      }

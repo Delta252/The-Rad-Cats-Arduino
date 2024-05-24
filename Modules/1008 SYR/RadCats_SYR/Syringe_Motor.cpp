@@ -23,7 +23,7 @@ void StepperMotor::setUp(void)
   accelMotor.setAcceleration(60);
 
 
-  //fullFlush();
+  fullFlush();
 }
 
 void StepperMotor::pumpVolume(float volume, int syringeType)

@@ -14,7 +14,10 @@
     digitalWrite(Output,HIGH);
     float sensorValue = analogRead(Input);
     float total = 0;
+
     for (int i=0; i<20; i++) {
+
+
       total = total + analogRead(Input);
     } 
     average = (total/20)*10;
