@@ -12,10 +12,12 @@ int Num_of_Mixer = 0;
 int Num_of_Temp = 0;
 int Num_of_Bubble = 0;
 int Num_of_LDS = 1;
+int Num_of_Syringe = 0;
 int ResetPin = 3;
 
+bool isSetUp = false;
 
-ASerial Device(DeviceDesc, Device_ID, Sender_ID, Num_of_Pumps, Num_of_Valves, Num_of_Shutter, Num_of_Temp, Num_of_Bubble, Num_of_LDS, Num_of_Mixer, ResetPin);
+ASerial Device(DeviceDesc, Device_ID, Sender_ID, Num_of_Pumps, Num_of_Valves, Num_of_Shutter, Num_of_Temp, Num_of_Bubble, Num_of_LDS, Num_of_Mixer, Num_of_Syringe, ResetPin);
 Pump P1(7,8,4);
 
 int Liquid = 3;
@@ -23,13 +25,17 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
   Device.Start();
-  P1.setUp();
-  pinMode(Liquid, INPUT);
 }
 
 
 void loop() {
   Device.updateSensors(LDS, 1, digitalRead(Liquid)); 
+  if(Device.GetDeviceConnectedStatus() && !isSetUp)
+  {
+    P1.setUp();
+    pinMode(Liquid, INPUT);
+    isSetUp = true;
+  }
   if (Device.GotCommand()) {
     //[sID1000 rID1001 PK1 R]   
     switch (Device.GetCommand()) {      

@@ -17,9 +17,11 @@ int Num_of_Mixer = 0;
 int Num_of_Temp = 1;
 int Num_of_Liquid = 0;
 int Num_of_Bubble = 0;
+int Num_of_Syringes = 0;
 int ResetPin = 3;
+bool isSetUp = false;
 
-ASerial Device(DeviceDesc, Device_ID, Sender_ID, Num_of_Pumps, Num_of_Valves, Num_of_Shutter, Num_of_Temp, Num_of_Bubble, Num_of_Liquid, Num_of_Mixer, ResetPin);
+ASerial Device(DeviceDesc, Device_ID, Sender_ID, Num_of_Pumps, Num_of_Valves, Num_of_Shutter, Num_of_Temp, Num_of_Bubble, Num_of_Liquid, Num_of_Mixer, Num_of_Syringes, ResetPin);
 Valve Valve1(3, 65, 127);
 Valve Valve2(5, 65, 127);
 Valve Valve3(6, 65, 128);
@@ -32,36 +34,25 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
   Device.Start();
-  
-  Valve1.setUp();
-  Valve2.setUp();
-  Valve3.setUp();
-  Valve4.setUp();
-  Valve5.setUp();
-  P1.setUp();
-  sensors.begin();
-  
+  Serial.println(Device.GetDeviceConnectedStatus());
 }
 
-45464748495051525354555657585960
-#include "ARCaDIUS_Serial.h"
-#include "OneWire.h"
-#include "DallasTemperature.h"
-#include "Valve.h"
-#include "Pump.h"
-
-#define ONE_WIRE_BUS 12
-OneWire oneWire(ONE_WIRE_BUS);
-DallasTemperature sensors(&oneWire);
-String DeviceDesc = "Module = Output";
-
-Not connected. Select a board and a port to connect automatically.
-New Line
-
 void loop() {
-  
+  //Checks if CONF command has been returned, then sets up
+  if(Device.GetDeviceConnectedStatus() && !isSetUp)
+  {
+    Valve1.setUp();
+    Valve2.setUp();
+    Valve3.setUp();
+    Valve4.setUp();
+    Valve5.setUp();
+    P1.setUp();
+    sensors.begin();
+    isSetUp = true;
+  }
   if (Device.GotCommand()) {
     sensors.requestTemperatures();
+    Serial.println(sensors.getTempCByIndex(0));
     Device.updateSensors(TEMP, 1, sensors.getTempCByIndex(0));
     switch (Device.GetCommand()) {
       case PUMP: 

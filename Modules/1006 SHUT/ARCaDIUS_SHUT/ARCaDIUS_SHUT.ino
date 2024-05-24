@@ -12,9 +12,12 @@ int Num_of_Mixer = 1;
 int Num_of_Temp = 1;
 int Num_of_Bubble = 0;
 int Num_of_LDS = 0;
+int Num_of_Syringe = 0;
 int ResetPin = 3;
 
-ASerial Device(DeviceDesc, Device_ID, Sender_ID, Num_of_Pumps, Num_of_Valves, Num_of_Shutter, Num_of_Temp, Num_of_Bubble, Num_of_LDS, Num_of_Mixer, ResetPin);
+bool isSetUp = false;
+
+ASerial Device(DeviceDesc, Device_ID, Sender_ID, Num_of_Pumps, Num_of_Valves, Num_of_Shutter, Num_of_Temp, Num_of_Bubble, Num_of_LDS, Num_of_Mixer, Num_of_Syringe, ResetPin);
 
 Shutter shutter(54, 3);
 MixerMotor MagMix(9,10,6);
@@ -23,11 +26,15 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
   Device.Start();
-  shutter.Initialise();
-  MagMix.SetUpMotor();
 }
 
 void loop() {
+  if(Device.GetDeviceConnectedStatus() && !isSetUp)
+  {
+    shutter.Initialise();
+    MagMix.SetUpMotor();
+    isSetUp = true;
+  }
   // Enter the subsystem code in the switch statement, delete all the serial prints.
   if (Device.GotCommand()) {
     //[sID1000 rID1005 PK1 R]

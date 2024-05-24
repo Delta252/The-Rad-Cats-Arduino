@@ -1,9 +1,15 @@
 #include "Syringe_Motor.h"
+#include "BubbleSensor.h"
 
 AccelStepper accelMotor(MOTOR_INTERFACE_TYPE, STEP, DIR);
+BubbleSensor bubbleSensor(A2, 11);
+
+int tubingStatus = NO_LIQUID;
+bool hasBeenPrimed = false;
 
 void StepperMotor::setUp(void)
 {
+  bubbleSensor.setupBS();
   //Initialise servo
   pumpValve.attach(pinSer);
   pumpValve.write(ANGLE_OUTPUT);
@@ -17,7 +23,7 @@ void StepperMotor::setUp(void)
   accelMotor.setAcceleration(60);
 
 
-  fullFlush();
+  //fullFlush();
 }
 
 void StepperMotor::pumpVolume(float volume, int syringeType)
@@ -69,16 +75,22 @@ void StepperMotor::pumpVolume(float volume, int syringeType)
       partialStep = 0;
       break;
   }
-
+  Serial.println((String)maxStep);
+  if(!hasBeenPrimed)
+  {
+    startPriming(maxStep);
+    hasBeenPrimed = true;
+  }
+   
   //Repeat full syringe pumps for number of times required
   for(int i = 0; i < fullSyringePumps; i++)
   {
-    fullPlunge(maxStep);
+    fillSyringe(maxStep);
     emptyPlunge();
   }
 
   //Refill syringe before pumping out remainder volume (if any)
-  fullPlunge(maxStep);
+  fillSyringe(maxStep);
   partialPlunge(partialStep);
 }
 
@@ -101,7 +113,7 @@ void StepperMotor::setValve(bool IO)
   }
 }
 
-void StepperMotor::fullPlunge(float maxStep)
+void StepperMotor::fillSyringe(float maxStep)
 {
   //Switch valve to input
   setValve(INPUT);
@@ -160,4 +172,19 @@ void StepperMotor::fullFlush()
 
   //Reset current position to 0
   accelMotor.setCurrentPosition(0);
+}
+
+void StepperMotor::startPriming(float maxStep)
+{
+  Serial.println("Please wait.. Priming..");
+  fillSyringe(maxStep);
+  float stepCount = maxStep;
+  while(tubingStatus != TUBING_FULL)
+  {
+    stepCount -= 50;
+    partialPlunge(stepCount);
+    tubingStatus = bubbleSensor.Status();
+  }
+  Serial.println("Priming Complete!");
+  fillSyringe(maxStep);
 }

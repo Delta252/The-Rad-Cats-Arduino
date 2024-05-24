@@ -11,6 +11,7 @@ enum operation {
   DETAIL,
   READ,
   EXTRACT,
+  SYRINGE
 };
 
 enum SENSOR {
@@ -50,8 +51,10 @@ class ASerial {
     int NumBubble;
     int NumLDS;
     int NumMixer;
+    int NumSyringe;
     int intPin;
     int ResPin;
+    bool isDeviceConnected;
 
     float* TempVal;
     float* BubbleVal;
@@ -79,12 +82,16 @@ class ASerial {
     int extract;
     int extractPos;
 
+    float syringeVolume;
+    int syringeType;
+
     void Pump();
     void Mixer();
     void OpenOneValve();
     void OpenMultipleValves();
     void Shutter();
     void Extract();
+    void Syringe();
 
     void readSensors();
 
@@ -111,7 +118,7 @@ class ASerial {
     void analyse();
 
   public:
-    ASerial(String DD, int rID, int sID, int P, int V, int I, int T, int B, int L, int M, int Res);
+    ASerial(String DD, int rID, int sID, int P, int V, int I, int T, int B, int L, int M, int S, int Res);
 
     //Error handler
     void Error(int code);
@@ -159,5 +166,10 @@ class ASerial {
     int getShutterPos();
 
     int getExtractPos();
+
+    float getSyringeVolume();
+    int getSyringeType();
+
+    bool GetDeviceConnectedStatus();
 };
 #endif

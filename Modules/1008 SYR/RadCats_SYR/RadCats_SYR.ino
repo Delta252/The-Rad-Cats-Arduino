@@ -14,16 +14,22 @@ int Num_of_Bubble = 0;
 int Num_of_Syringe = 1;
 int ResetPin = 3;
 
+bool isSetUp = false;
+
 ASerial Device(DeviceDesc, Device_ID, Sender_ID, Num_of_Pumps, Num_of_Valves, Num_of_Shutter, Num_of_Temp, Num_of_Bubble, Num_of_LDS, Num_of_Mixer, Num_of_Syringe, ResetPin);
 StepperMotor myMotor(12);
 
 void setup() {
   Serial.begin(115200);
-  // put your setup code here, to run once:
-  myMotor.setUp();
+  Device.Start();
 }
 
 void loop() {
+  if(Device.GetDeviceConnectedStatus() && !isSetUp)
+  {
+    myMotor.setUp();
+    isSetUp = true;
+  }
   if (Device.GotCommand()) {
     switch (Device.GetCommand()) {
       case PUMP: 
@@ -42,7 +48,6 @@ void loop() {
         Serial.println("The shutter position  is: " + (String)Device.getShutterPos());
         break;
       case SYRINGE:
-        Serial.println("The Syringe number is: " + (String)Device.getSyringe());
         Serial.println("The Syringe volume is: " + (String)Device.getSyringeVolume());
         Serial.println("The Syringe Type is: " + (String)Device.getSyringeType());
         myMotor.pumpVolume(Device.getSyringeVolume(), Device.getSyringeType());

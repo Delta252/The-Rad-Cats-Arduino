@@ -1,5 +1,5 @@
 #include "BubbleSensor.h"
-BubbleSensor Bubble(A0,6);
+BubbleSensor Bubble(A2,11);
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);

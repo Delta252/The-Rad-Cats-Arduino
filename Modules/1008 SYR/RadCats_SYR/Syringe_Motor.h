@@ -5,14 +5,17 @@
 //Motor interface type: 1 = Stepper driver
 #define MOTOR_INTERFACE_TYPE 1
 //Only change step, dir, or enable if the PCB changes the GPIO pins available to these 
-#define STEP 8
-#define DIR 7
-#define ENABLE 4
+#define STEP 3
+#define DIR 4
+#define ENABLE 2
 
 //Angle defines for servo motor
 #define ANGLE_INPUT 0
 #define ANGLE_OUTPUT 70
 #define ANGLE_MIDDLE 40
+
+#define NO_LIQUID 1
+#define TUBING_FULL 2
 
 //Syringe type defines
 enum SYRINGE_TYPE
@@ -29,11 +32,11 @@ enum SYRINGE_TYPE
 #define ECCENTRIC10ML_SYRINGE_VAL_CONSTANT 0.08
 
 #define CONCENTRIC5ML_SYRINGE_VAL_DIVISOR 0.011
-#define CONCENTRIC2ML_SYRINGE_VAL_DIVISOR 1 //TBD
-#define ECCENTRIC10ML_SYRINGE_VAL_DIVISOR 0.017
+#define CONCENTRIC2ML_SYRINGE_VAL_DIVISOR 1 //Uncalibrated
+#define ECCENTRIC10ML_SYRINGE_VAL_DIVISOR 0.0017
 
 #define CONCENTRIC5ML_SYRINGE_MAX_SPEED 120
-#define CONCENTRIC2ML_SYRINGE_MAX_SPEED 0 //TBD
+#define CONCENTRIC2ML_SYRINGE_MAX_SPEED 0 //Uncalibrated
 #define ECCENTRIC10ML_SYRINGE_MAX_SPEED 60
 
 //Input/Output
@@ -52,8 +55,9 @@ class StepperMotor
     void setUp();
     void pumpVolume(float volume, int syringeType);
     void setValve(bool IO);
-    void fullPlunge(float maxStep);
+    void fillSyringe(float maxStep);
     void emptyPlunge();
     void partialPlunge(float desiredStep);
     void fullFlush();
+    void startPriming(float maxStep);
 };

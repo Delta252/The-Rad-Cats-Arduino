@@ -1,7 +1,7 @@
 #include "ARCaDIUS_Serial.h"
 
 
-ASerial::ASerial(String DD, int rID, int sID, int P, int V, int I, int T, int B, int L, int M, int Res) {
+ASerial::ASerial(String DD, int rID, int sID, int P, int V, int I, int T, int B, int L, int M, int S, int Res) {
   ResPin = Res;
   digitalWrite(ResPin, HIGH);
   pinMode(ResPin, OUTPUT);
@@ -18,11 +18,13 @@ ASerial::ASerial(String DD, int rID, int sID, int P, int V, int I, int T, int B,
   NumBubble = B;
   NumLDS = L;
   NumMixer = M;
+  NumSyringe = S;
   isWaiting = true;
   instance0_ = this;
   TempVal = new float[NumTemp];
   BubbleVal = new float[NumBubble];
   LDSVal = new float[NumLDS];
+  isDeviceConnected = false;
   //attachInterrupt(digitalPinToInterrupt(intPin), serialInterrupt, FALLING);
   //Timer1.initialize(300000);
   for (int i = 0; i < NumTemp; i++) {
@@ -68,6 +70,7 @@ void ASerial::ReturnDetails() {
                  " T" + (String)NumTemp +
                  " B" + (String)NumBubble +
                  " L" + (String)NumLDS +
+                 " S" + (String)NumSyringe +
                  " (" + DeviceDesc + ")]");
 
 }
@@ -130,12 +133,13 @@ bool ASerial::GotCommand(){
 }
 
 int ASerial::process() {
-  if (Serial.available() > 0) {
-    if(Serial.peek() == 'C')
+  if(Serial.peek() == 'C')
     {
       Serial.println(instance0_->sCONF);
-      return true;
+      isDeviceConnected = true;
+      return isDeviceConnected;
     }
+  if (Serial.available() > 0 && Serial.peek() != 'C') {
     sID = Serial.readStringUntil(' ');
     if (sID[0] == '[') {
       //Serial.println(sID);
@@ -200,6 +204,9 @@ void ASerial::analyse() {
     case 'E':
       op = EXTRACT;
       Extract();
+    case 'Y':
+      op = SYRINGE;
+      Syringe();
     default:
       break;
   }
@@ -226,9 +233,12 @@ String readStringuntil(String s, char c) {
 
 void ASerial::Pump() {
   String rubbish;
+  pump = Command[1] - '0';
+  //Serial.println(pump);
   rubbish = readStringuntil(Command, 'm');
   Command.remove(0, rubbish.length());
   pumpValue = readStringuntil(Command, ' ').toFloat();
+  //Serial.println(pumpValue);
   rubbish = readStringuntil(Command, 'D');
   Command.remove(0, rubbish.length());
   if (pumpValue > 0) {
@@ -237,26 +247,22 @@ void ASerial::Pump() {
   else {
     pumpDir = 0;
   }
+  //pumpDir = Command[0] - '0';
+  //Serial.println(pumpDir);
 }
 
 void ASerial::OpenOneValve()
 {
   String rubbish;
-  rubbish = readStringuntil(Command, 'S');
-  //Remove command bit
-  Command.remove(0, rubbish.length());
-  //Get valve to open
-  valveToOpen = Command[0] - '0';
-
-  //Set valve positions based on valve number
+  valveToOpen = Command[1] - '0';
+  Serial.println(valveToOpen);
   for(int i = 0; i < NumValve; i++)
   {
-    //If i == valveToOpen then open, i < valveToOpen then close, i > valveToOpen then middle
-    if(i + 1 == valveToOpen)
+    if(i == valveToOpen)
     {
       valveStates[i] = 0;
     }
-    else if (i + 1 < valveToOpen)
+    else if (i < valveToOpen)
     {
       valveStates[i] = 1;
     }
@@ -269,14 +275,10 @@ void ASerial::OpenOneValve()
 
 void ASerial::OpenMultipleValves()
 {
-  String rubbish;
-  rubbish = readStringuntil(Command, 'S');
-  //Remove command bit
-  Command.remove(0, rubbish.length());
   for(int i = 0; i < NumValve; i++)
   {
     int valveState = Command[0] - '0';
-    //If valve position is invalid, flag error (Does not prevent code from running)
+    //If valve position is invalid, throw error
     if(valveState > 2 || valveState < 0)
     {
       Error(4);
@@ -284,6 +286,7 @@ void ASerial::OpenMultipleValves()
     //Put valve state in array and remove from command
     valveStates[i] = Command[0] - '0';
     Command.remove(0, 1);
+    Serial.println("Valve " + (String)i + " position is " + (String)valveStates[i]);
   }
 }
 
@@ -319,6 +322,18 @@ void ASerial::Extract()
   Command.remove(0, rubbish.length());
   extractPos = readStringuntil(Command,' ').toInt();
 }
+
+void ASerial::Syringe()
+{
+  String rubbish;
+  rubbish = readStringuntil(Command, 'S');
+  Command.remove(0, rubbish.length());
+  syringeType = readStringuntil(Command, ' ').toFloat();
+  rubbish = readStringuntil(Command, 'm');
+  Command.remove(0, rubbish.length());
+  syringeVolume = readStringuntil(Command, ' ').toFloat();
+}
+
 
 void ASerial::readSensors() {
   int PK_size = (NumBubble + NumTemp + NumLDS) * 2 + 1;
@@ -421,6 +436,16 @@ int ASerial::getExtractPos()
 {
   return extractPos;
 }
+
+float ASerial::getSyringeVolume()
+{
+  return syringeVolume;
+}
+int ASerial::getSyringeType()
+{
+  return syringeType;
+}
+
 int ASerial::GetCommand() {
   int S = process();
   serialFlush();
@@ -429,6 +454,11 @@ int ASerial::GetCommand() {
     return op;
   }
   return -1;
+}
+
+bool ASerial::GetDeviceConnectedStatus()
+{
+  return isDeviceConnected;
 }
 
 void ASerial::FinishedCommand() {

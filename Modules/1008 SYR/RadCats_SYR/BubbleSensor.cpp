@@ -19,20 +19,20 @@
     } 
     average = (total/20)*10;
     Serial.println(average);
-  //   if (average < 800) {
-  //     Serial.println("Tube present, no liquid");
-  //     return 1;
-  //   }
-  //   else if (average > 984) {
-  //     Serial.println("Tube and liquid present");
-  //     return 2;
-  //   }
-  //   else if (average > 975 && average < 984){
-  //     Serial.println("No tube present");
-  //     return 3;
-  //   }
-  //   else {
-  //     return 0;
-  //   }
-  //  delay(500);
+     if (average > 130) {
+       Serial.println("Tube present, no liquid");
+       return 1;
+     }
+     else if (average < 125){
+       Serial.println("Tube and liquid present");
+       return 2;
+     }
+     else if (average >  125 && average < 130){
+       Serial.println("No tube present");
+       return 3;
+     }
+     else {
+       return 0;
+     }
+    delay(500);
   };

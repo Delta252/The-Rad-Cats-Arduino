@@ -10,7 +10,8 @@ enum operation {
   MIXER,
   DETAIL,
   READ,
-  SYRINGE,
+  EXTRACT,
+  SYRINGE
 };
 
 enum SENSOR {
@@ -24,8 +25,6 @@ class ASerial {
   private:
     //Flushes the serial port of any unwanted data
     void serialFlush();
-
-    int Handshake();
 
     //Checks to see if the receiver ID matches that of the device
     int CheckrID(String rID, int Device_ID);
@@ -55,6 +54,7 @@ class ASerial {
     int NumSyringe;
     int intPin;
     int ResPin;
+    bool isDeviceConnected;
 
     float* TempVal;
     float* BubbleVal;
@@ -68,7 +68,9 @@ class ASerial {
     int pumpDir;
 
     int valve;
-    int valveState;
+    int valveToOpen;
+    //IF NUMBER OF VALVES CHANGE, CHANGE ARRAY SIZE
+    int valveStates[5];
 
     int mixer;
     float mixerSpeed;
@@ -77,14 +79,18 @@ class ASerial {
     int shutter;
     int shutterPos;
 
-    int syringe;
+    int extract;
+    int extractPos;
+
     float syringeVolume;
     int syringeType;
 
     void Pump();
     void Mixer();
-    void Valve();
+    void OpenOneValve();
+    void OpenMultipleValves();
     void Shutter();
+    void Extract();
     void Syringe();
 
     void readSensors();
@@ -151,7 +157,6 @@ class ASerial {
     bool getPumpDir();
 
     int getValve();
-    bool getValveState();
 
     int getMixer();
     int getMixerSpeed();
@@ -160,8 +165,11 @@ class ASerial {
     int getShutter();
     int getShutterPos();
 
+    int getExtractPos();
+
     float getSyringeVolume();
-    int getSyringe();
     int getSyringeType();
+
+    bool GetDeviceConnectedStatus();
 };
 #endif
